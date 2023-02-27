@@ -27,7 +27,7 @@ route.get("/:id", async (req, res) => {
   }
 });
 
-route.post("/", auth, async (req, res) => {
+route.post("/", async (req, res) => {
   if (!req.files) return setResponse(res, "File not provided", null, 405);
   try {
     const file_code = req.files.myFile.data;
