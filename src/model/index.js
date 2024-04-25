@@ -16,6 +16,8 @@ const {TechStackModel}= require('./TechStack');
 const {ArtificialIntelligenceModel}= require('./AIServices');
 const {ArVrServiceModel}= require('./ArVrService');
 const {UiUxServiceModel}= require('./UiUxService');
+const {FAQModel} = require('./Faq');
+const {OpenPositionModel} = require('./OpenPositions');
 module.exports={
     IntroModel,
     AboutModel,
@@ -32,5 +34,7 @@ module.exports={
     TechStackModel,
     ArtificialIntelligenceModel,
     ArVrServiceModel,
-    UiUxServiceModel
+    UiUxServiceModel,
+    FAQModel,
+    OpenPositionModel
 }

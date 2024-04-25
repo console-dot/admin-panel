@@ -4,6 +4,7 @@ require('dotenv').config();
 const cors = require('cors');
 const Auth = require('./src/middleware/Auth')
 const app = express();
+
 app.use(cors());
 const authMiddleware = new Auth();
 app.use(authMiddleware.authentication)

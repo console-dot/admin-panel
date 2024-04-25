@@ -9,7 +9,7 @@ const productRS = mongoose.Schema({
     marketAnalysis: { type: String },
     client: { type: String },
     feasibility: { type: String },
-    WhyChoose: { ref: 'WhyChoose' },
+    WhyChoose: {type:mongoose.Types.ObjectId, ref: 'WhyChoose' },
   }],
   whyChoose:{
     type:mongoose.Types.ObjectId,
