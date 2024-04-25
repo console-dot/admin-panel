@@ -33,7 +33,7 @@ const intro = mongoose.Schema({
         countries:{
             type: String
         },
-        expEmployess:{
+        expEmployees:{
             type: String
         },
         scrumTeams:{

@@ -5,11 +5,15 @@ const testimonial = mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref:'File'
     },
-    name:{
+    fullName:{
         type: String,
         required: true
     },
     description:{
+        type: String,
+        required: true
+    },
+    designation:{
         type: String,
         required: true
     }
