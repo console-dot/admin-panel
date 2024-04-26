@@ -1,3 +1,4 @@
-const Response = require('./Response');
+const Response = require("./Response");
+const { LandingPages } = require("./LandingPage.js");
 
-module.exports= Response
+module.exports = { Response, LandingPages };

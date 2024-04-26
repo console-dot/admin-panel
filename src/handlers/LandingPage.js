@@ -1,0 +1,88 @@
+const { LandingModel, IntroModel, AboutModel, OffshoreTypeModel, TestimonialModel, ExpertiseModel } = require("../model");
+const Response = require("./Response");
+
+class LandingPages extends Response {
+  addLandingPage = async (req, res) => {
+    try {
+      // Extract and construct each subdocument from request body
+      const introData = {
+        heroDescription: req.body.heroDescription,
+        footerDescription: req.body.footerDescription,
+        email: req.body.email,
+        phone: req.body.phone,
+        address: req.body.address,
+        socialLinks: req.body.socialLinks,
+        workExperience: req.body.workExperience,
+      };
+
+      const aboutData = {
+        description: req.body.aboutDescription,
+      };
+
+      const offshoreTypeData = {
+        type: req.body.offshoreType,
+        description: req.body.offshoreDescription,
+        advantages: req.body.offshoreAdvantages,
+        comparison: req.body.offshoreComparison,
+      };
+
+      const testimonialData = {
+        image: req.body.testimonialImage,
+        fullName: req.body.testimonialFullName,
+        description: req.body.testimonialDescription,
+        designation: req.body.testimonialDesignation,
+      };
+
+      const expertiseData = {
+        image: req.body.expertiseImage,
+        name: req.body.expertiseName,
+        description: req.body.expertiseDescription,
+      };
+
+      // Create each document in the database
+      const intro = new IntroModel(introData);
+      const about = new AboutModel(aboutData);
+      const offshoreType = new OffshoreTypeModel(offshoreTypeData);
+      const testimonial = new TestimonialModel(testimonialData);
+      const expertise = new ExpertiseModel(expertiseData);
+
+      // Save all documents to the database
+      await Promise.all([
+        intro.save(),
+        about.save(),
+        offshoreType.save(),
+        testimonial.save(),
+        expertise.save(),
+      ]);
+
+      // Now that we have all IDs, create the Landing Page
+      const landingPage = new LandingModel({
+        intro: intro._id,
+        about: about._id,
+        offshoreType: offshoreType._id,
+        testimonial: testimonial._id,
+        expertise: expertise._id,
+      });
+      await landingPage.save();
+
+      // Populate the references to return complete data
+      const populatedLandingPage = await LandingModel.findById(
+        landingPage._id
+      ).populate("intro about offshoreType testimonial expertise");
+
+      return this.sendResponse(req, res, {
+        data: populatedLandingPage,
+        message: "Landing page created successfully",
+        status: 201,
+      });
+    } catch (error) {
+      console.log(error);
+      return this.sendResponse(req, res, {
+        data: null,
+        message: "Internal Server Error!",
+        status: 500,
+      });
+    }
+  };
+}
+module.exports = { LandingPages };
