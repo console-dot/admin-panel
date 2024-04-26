@@ -24,4 +24,4 @@ class Auth extends Response{
         })
     }
 }
-module.exports = Auth;
+module.exports = {Auth};
