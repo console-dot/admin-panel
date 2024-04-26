@@ -6,12 +6,12 @@ const user = mongoose.Schema({
         required:true
     },
     password:{
-        type: mongoose.Types.ObjectId,
-        ref:'WhyChoose'
+        type:String,
+        required:true
     },
     userName:{
-        type: mongoose.Types.ObjectId,
-        ref:'TechStack'
+        type:String,
+        required:true
     }
 
 })

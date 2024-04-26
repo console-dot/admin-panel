@@ -1,13 +1,12 @@
 const { decode, sign } = require("jsonwebtoken");
 
 class Response {
-  sendResponse = (req, res, { data, message, status }) => {
+  sendResponse = (req, res, { data, message, status, token }) => {
     try {
       const obj = { data, message, status };
       if (!status) {
         obj.status = 200;
       }
-      let token = null;
       if (
         req &&
         req?.headers.authorization &&
