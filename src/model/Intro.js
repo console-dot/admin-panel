@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
 
 const intro = mongoose.Schema({
-    _id:{
-        type: mongoose.Types.ObjectId,
-        required:true
-    },
     heroDescription:{
         type: String,
         required: true
@@ -25,10 +21,12 @@ const intro = mongoose.Schema({
         type: String,
         required: true
     },
-    socialLinks:{
-        type: String,
-        required: true
-    },
+    socialLinks:[
+{
+    name: String,
+    icon: { type: mongoose.Types.ObjectId , ref: 'File'}
+}
+    ],
     workExperience:{
         countries:{
             type: String
