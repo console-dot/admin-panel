@@ -4,13 +4,11 @@ require("dotenv").config();
 const cors = require("cors");
 const Auth = require("./src/middleware/Auth");
 const app = express();
-
+const { router} = require('./src/routes')
 app.use(cors());
 const authMiddleware = new Auth();
-app.use(authMiddleware.authentication);
-app.get("/", (req, res) => {
-  res.status(200).send({ status: 200, message: "Hello", data: null });
-});
+
+app.use("/", router);
 
 const mongoURI = process.env.MONGO_URI;
 

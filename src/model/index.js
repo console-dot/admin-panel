@@ -18,6 +18,7 @@ const {ArVrServiceModel}= require('./ArVrService');
 const {UiUxServiceModel}= require('./UiUxService');
 const {FAQModel} = require('./Faq');
 const {OpenPositionModel} = require('./OpenPositions');
+const {UserModel} = require('./User');
 module.exports={
     IntroModel,
     AboutModel,
@@ -36,5 +37,6 @@ module.exports={
     ArVrServiceModel,
     UiUxServiceModel,
     FAQModel,
-    OpenPositionModel
+    OpenPositionModel,
+    UserModel
 }
