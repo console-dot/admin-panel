@@ -5,7 +5,19 @@ const { LandingPages } = require("./LandingPage.js");
 const {About} = require('./About.js');
 const {OffShoreType} = require('./OffShoreType.js');
 const {Testimonials} = require('./Testimonials.js');
-const {Expertise} = require('./Expertise.js')
+const {Expertise} = require('./Expertise.js');
+const {OffshoringServices} = require('./OffshoringServices.js');
+const {CustomService} = require('./CustomService.js');
+const {ProductRS} = require('./ProductRS.js');
+const {TechStack} = require('./TechStack.js');
+const {WebDev} = require('./WebDev.js');
+const {MobDev} = require('./MobDev.js');
+const {BlockchainDS} = require('./BlockChainDS.js');
+const {AIService} = require('./AIService.js');
+const {ArVrService} = require('./ArVrService.js');
+const {UiUxService} = require('./UiUxService.js');
+const {Faq} = require('./Faq.js');
+const {OpenPosition}= require("./OpenPositions.js")
 module.exports = {
   Response,
   User,
@@ -14,5 +26,17 @@ module.exports = {
     About,
     OffShoreType,
     Testimonials,
-    Expertise
+    Expertise,
+    OffshoringServices,
+    CustomService,
+    ProductRS,
+    TechStack,
+    WebDev,
+    MobDev,
+    BlockchainDS,
+    AIService,
+    ArVrService,
+    UiUxService,
+    Faq,
+    OpenPosition
 };

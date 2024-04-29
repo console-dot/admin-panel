@@ -1,8 +1,11 @@
 const router = require("express").Router();
 const { LandingPages } = require("../handlers");
+const { Auth } = require("../middleware");
 
 const handlers = new LandingPages();
+const auth = new Auth();
 
-router.post("/", handlers.addLandingPage);
+router.get("/:id",auth.authentication, handlers.getLandingPage);
+router.post("/",auth.authentication, handlers.addLandingPage);
 
 module.exports = router;

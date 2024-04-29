@@ -5,10 +5,7 @@ const uiUxService = mongoose.Schema({
         type:String,
         required:true
     },
-    whyChoose:{
-        type: mongoose.Types.ObjectId,
-        ref:'WhyChoose'
-    },
+    whyChoose:[],
     techStack:{
         type: mongoose.Types.ObjectId,
         ref:'TechStack'

@@ -1,10 +1,44 @@
-const { LandingModel, IntroModel, AboutModel, OffshoreTypeModel, TestimonialModel, ExpertiseModel } = require("../model");
+const {
+  LandingModel,
+  IntroModel,
+  AboutModel,
+  OffshoreTypeModel,
+  TestimonialModel,
+  ExpertiseModel,
+} = require("../model");
 const Response = require("./Response");
 
 class LandingPages extends Response {
+  getLandingPage = async (req, res) => {
+    try {
+      const landingPage = await LandingModel.findById(req.params.id)
+        .populate("intro")
+        .populate("about")
+        .populate("offshoreType")
+        .populate("testimonial")
+        .populate("expertise");
+
+      if (!landingPage) {
+        return this.sendResponse(req, res, {
+          status: 404,
+          message: "Landing page not found",
+        });
+      }
+      return this.sendResponse(req, res, {
+        status: 201,
+        message: "Landing page retrieved successfully",
+        data:landingPage
+      });
+    } catch (error) {
+      console.error(error);
+      return this.sendResponse(req, res, {
+        status: 500,
+        message: "Internal Server Error!",
+      });
+    }
+  };
   addLandingPage = async (req, res) => {
     try {
-      // Extract and construct each subdocument from request body
       const introData = {
         heroDescription: req.body.heroDescription,
         footerDescription: req.body.footerDescription,
@@ -71,7 +105,7 @@ class LandingPages extends Response {
       ).populate("intro about offshoreType testimonial expertise");
 
       return this.sendResponse(req, res, {
-        data: populatedLandingPage,
+        
         message: "Landing page created successfully",
         status: 201,
       });

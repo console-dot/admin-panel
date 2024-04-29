@@ -13,10 +13,7 @@ const mobileDevelopment = mongoose.Schema({
          type:mongoose.Types.ObjectId,
         ref:"TechStack"
     },
-    whyChoose:{
-         type:mongoose.Types.ObjectId,
-        ref:"WhyChoose"
-    }
+    whyChoose:[]
 
 })
 
