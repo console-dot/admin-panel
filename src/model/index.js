@@ -8,7 +8,6 @@ const {LandingModel}= require('./LandingPage');
 const {OffshoringServicesModel}= require('./OffshoringServices');
 const {CustomServiceModel}= require('./CustomService');
 const {ProductRSModel}= require('./ProductRS');
-const {WhyChooseModel}= require('./WhyChoose');
 const {WebDevelopmentModel}= require('./WebDevelopment');
 const {MobileDevelopmentModel}= require('./MobileDevelopment');
 const {BlockChainDSModel}= require('./BlockChainDs');
@@ -19,6 +18,8 @@ const {UiUxServiceModel}= require('./UiUxService');
 const {FAQModel} = require('./Faq');
 const {OpenPositionModel} = require('./OpenPositions');
 const {UserModel} = require('./User');
+const {ContactUsModel}= require('./ContactUs')
+
 module.exports={
     IntroModel,
     AboutModel,
@@ -28,7 +29,6 @@ module.exports={
     OffshoreTypeModel,LandingModel,OffshoringServicesModel,
     CustomServiceModel,
     ProductRSModel,
-    WhyChooseModel,
     WebDevelopmentModel,
     MobileDevelopmentModel,
     BlockChainDSModel,
@@ -38,5 +38,6 @@ module.exports={
     UiUxServiceModel,
     FAQModel,
     OpenPositionModel,
-    UserModel
+    UserModel,
+    ContactUsModel
 }

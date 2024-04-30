@@ -9,14 +9,7 @@ const customService = mongoose.Schema({
         type:String,
         required:true
     },
-    whyChooseDesc:{
-        type:String,
-        required:true
-    },
-    whyChoose:{
-        type:mongoose.Types.ObjectId,
-        ref:'WhyChoose'
-    },
+    whyChooseDes:[],
     delivers:{
         actionDescription:{
             type:String,
