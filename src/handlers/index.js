@@ -17,7 +17,9 @@ const {AIService} = require('./AIService.js');
 const {ArVrService} = require('./ArVrService.js');
 const {UiUxService} = require('./UiUxService.js');
 const {Faq} = require('./Faq.js');
-const {OpenPosition}= require("./OpenPositions.js")
+const {OpenPosition}= require("./OpenPositions.js");
+const {ContactUs}= require("./ContactUs.js");
+
 module.exports = {
   Response,
   User,
@@ -38,5 +40,6 @@ module.exports = {
     ArVrService,
     UiUxService,
     Faq,
-    OpenPosition
+    OpenPosition,
+    ContactUs
 };

@@ -11,10 +11,7 @@ const productRS = mongoose.Schema({
     feasibility: { type: String },
     roadMap: { type: String }
   }],
-  whyChoose:{
-    type:mongoose.Types.ObjectId,
-    ref:"WhyChoose"
-  }
+  whyChooseDes:[]
   
 });
 

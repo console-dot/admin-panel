@@ -6,7 +6,7 @@ class CustomService extends Response {
     try {
       const customService = await CustomServiceModel.findById(
         req.params.id
-      ).populate("whyChoose");
+      );
 
       if (!customService) {
         return this.sendResponse(req, res, {
@@ -31,19 +31,13 @@ class CustomService extends Response {
     try {
       const description = req.body.description;
       const proposition = req.body.proposition;
-      const whyChooseDesc = req.body.whyChooseDesc;
-      const whychoose = req.body.whyChoose;
+      const whyChooseDes= req.body.whyChooseDes;
       const delivers = req.body.delivers;
-      const whyChoose = new WhyChooseModel({
-        description:whychoose
-      });
-      await whyChoose.save();
        
       const newCustomService = new CustomServiceModel({
         description: description,
         proposition: proposition,
-        whyChooseDesc:whyChooseDesc,
-        whyChoose:whyChoose._id,
+        whyChooseDes:whyChooseDes,
         delivers:delivers
       });
       await newCustomService.save();
@@ -60,6 +54,38 @@ class CustomService extends Response {
       });
     }
   };
+  updateCustomService = async (req, res) => {
+    try {
+      const customServiceId = req.params.id;
+  
+      const existingCustomService = await CustomServiceModel.findById(customServiceId);
+      if (!existingCustomService) {
+        return this.sendResponse(req, res, {
+          status: 404,
+          message: "Custom Service not found",
+        });
+      }
+  
+      existingCustomService.description = req.body.description;
+      existingCustomService.proposition = req.body.proposition;
+      existingCustomService.whyChooseDes = req.body.whyChooseDes;
+      existingCustomService.delivers = req.body.delivers;
+  
+      await existingCustomService.save();
+  
+      return this.sendResponse(req, res, {
+        status: 200,
+        message: "Custom Service updated successfully",
+      });
+    } catch (error) {
+      console.error(error);
+      return this.sendResponse(req, res, {
+        status: 500,
+        message: "Internal Server Error!",
+      });
+    }
+  };
+  
 }
 
 module.exports = { CustomService };

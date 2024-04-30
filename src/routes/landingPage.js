@@ -7,5 +7,6 @@ const auth = new Auth();
 
 router.get("/:id",auth.authentication, handlers.getLandingPage);
 router.post("/",auth.authentication, handlers.addLandingPage);
+router.put("/:id",auth.authentication, handlers.updateLandingPage);
 
 module.exports = router;

@@ -19,7 +19,7 @@ const arvrService = require('./ArVrService');
 const uiuxService = require('./UiUxService');
 const faq = require('./Faq');
 const openPosition = require("./OpenPostion");
-
+const contact= require("./ContactUs");
 
 
 router.use("/signup",  user);
@@ -42,6 +42,6 @@ router.use("/ar-vr", arvrService);
 router.use("/ui-ux", uiuxService);
 router.use("/faq", faq);
 router.use("/open-positions", openPosition)
-
+router.use("/contact-us", contact)
 
 module.exports = router;

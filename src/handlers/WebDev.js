@@ -7,7 +7,7 @@ const Response = require("./Response");
         try {
           const webDevs = await WebDevelopmentModel.findById(
             req.params.id
-          ).populate("techStack").populate("whyChoose");
+          ).populate("techStack");
     
           if (!webDevs) {
             return this.sendResponse(req, res, {
@@ -32,15 +32,12 @@ const Response = require("./Response");
       try {
         const description = req.body.description;
         const proposition= req.body.proposition;
-        const whyChoose= req.body.whyChoose;
+        const whyChooseDes= req.body.whyChooseDes;
         const techName = req.body.techName;
         const techType = req.body.techType;
         const techImage = req.body.techImage;
 
-        const newWhychoose = new WhyChooseModel({
-            description : whyChoose
-        })
-        await newWhychoose.save();
+        
         
         const newTechStack = new TechStackModel({
             name:techName,
@@ -52,7 +49,7 @@ const Response = require("./Response");
         const newWebDev = new WebDevelopmentModel({
             description:description,
             proposition:proposition,
-            whyChoose: newWhychoose._id,
+            whyChooseDes: whyChooseDes,
             techStack: newTechStack._id
         })
         await newWebDev.save();
@@ -70,6 +67,52 @@ const Response = require("./Response");
         });
       }
     };
+    updateWebDev = async (req, res) => {
+      try {
+        const webDevId = req.params.id;
+    
+        const existingWebDev = await WebDevelopmentModel.findById(webDevId);
+        if (!existingWebDev) {
+          return this.sendResponse(req, res, {
+            status: 404,
+            message: "Web Development not found",
+          });
+        }
+    
+        existingWebDev.description = req.body.description;
+        existingWebDev.proposition = req.body.proposition;
+        existingWebDev.whyChooseDes = req.body.whyChooseDes;
+    
+        if (req.body.techName && req.body.techType && req.body.techImage) {
+
+          let techStack = await TechStackModel.findOne({ name: req.body.techName });
+          if (!techStack) {
+            techStack = new TechStackModel({
+              name: req.body.techName,
+              type: req.body.techType,
+              image: req.body.techImage,
+            });
+            await techStack.save();
+          }
+          existingWebDev.techStack = techStack._id;
+        }
+    
+
+        await existingWebDev.save();
+    
+        return this.sendResponse(req, res, {
+          status: 200,
+          message: "Web Development updated successfully",
+        });
+      } catch (error) {
+        console.error(error);
+        return this.sendResponse(req, res, {
+          status: 500,
+          message: "Internal Server Error!",
+        });
+      }
+    };
+    
   }
   module.exports = { WebDev };
   

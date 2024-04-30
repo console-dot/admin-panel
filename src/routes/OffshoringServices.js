@@ -7,5 +7,6 @@ const auth = new Auth();
 
 router.get("/:id",auth.authentication, handlers.getOffshoringServices);
 router.post("/",auth.authentication, handlers.createOffshoringServices);
+router.put("/:id",auth.authentication, handlers.updateOffshoringServices);
 
 module.exports = router;

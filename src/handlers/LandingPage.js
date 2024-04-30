@@ -118,5 +118,76 @@ class LandingPages extends Response {
       });
     }
   };
+  updateLandingPage = async (req, res) => {
+    try {
+      const landingPageId = req.params.id;
+  
+      // Check if landing page exists
+      const existingLandingPage = await LandingModel.findById(landingPageId);
+      if (!existingLandingPage) {
+        return this.sendResponse(req, res, {
+          status: 404,
+          message: "Landing page not found",
+        });
+      }
+  
+      // Update intro data
+      const introData = {
+        heroDescription: req.body.heroDescription,
+        footerDescription: req.body.footerDescription,
+        email: req.body.email,
+        phone: req.body.phone,
+        address: req.body.address,
+        socialLinks: req.body.socialLinks,
+        workExperience: req.body.workExperience,
+      };
+      await IntroModel.findByIdAndUpdate(existingLandingPage.intro, introData);
+  
+      // Update about data
+      const aboutData = {
+        description: req.body.aboutDescription,
+      };
+      await AboutModel.findByIdAndUpdate(existingLandingPage.about, aboutData);
+  
+      // Update offshore type data
+      const offshoreTypeData = {
+        type: req.body.offshoreType,
+        description: req.body.offshoreDescription,
+        advantages: req.body.offshoreAdvantages,
+        comparison: req.body.offshoreComparison,
+      };
+      await OffshoreTypeModel.findByIdAndUpdate(existingLandingPage.offshoreType, offshoreTypeData);
+  
+      // Update testimonial data
+      const testimonialData = {
+        image: req.body.testimonialImage,
+        fullName: req.body.testimonialFullName,
+        description: req.body.testimonialDescription,
+        designation: req.body.testimonialDesignation,
+      };
+      await TestimonialModel.findByIdAndUpdate(existingLandingPage.testimonial, testimonialData);
+  
+      // Update expertise data
+      const expertiseData = {
+        image: req.body.expertiseImage,
+        name: req.body.expertiseName,
+        description: req.body.expertiseDescription,
+      };
+      await ExpertiseModel.findByIdAndUpdate(existingLandingPage.expertise, expertiseData);
+  
+      // Respond with success message
+      return this.sendResponse(req, res, {
+        status: 200,
+        message: "Landing page updated successfully",
+      });
+    } catch (error) {
+      console.error(error);
+      return this.sendResponse(req, res, {
+        status: 500,
+        message: "Internal Server Error!",
+      });
+    }
+  };
+  
 }
 module.exports = { LandingPages };

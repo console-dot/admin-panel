@@ -65,6 +65,54 @@ const Response = require("./Response");
         });
       }
     };
+    updateMobDev = async (req, res) => {
+      try {
+        const mobDevId = req.params.id;
+    
+
+        const existingMobDev = await MobileDevelopmentModel.findById(mobDevId);
+        if (!existingMobDev) {
+          return this.sendResponse(req, res, {
+            status: 404,
+            message: "Mobile Development not found",
+          });
+        }
+    
+
+        existingMobDev.description = req.body.description;
+        existingMobDev.proposition = req.body.proposition;
+        existingMobDev.whyChooseDes = req.body.whyChooseDes;
+    
+
+        if (req.body.techName && req.body.techType && req.body.techImage) {
+
+          let techStack = await TechStackModel.findOne({ name: req.body.techName });
+          if (!techStack) {
+            techStack = new TechStackModel({
+              name: req.body.techName,
+              type: req.body.techType,
+              image: req.body.techImage,
+            });
+            await techStack.save();
+          }
+          existingMobDev.techStack = techStack._id;
+        }
+    
+        await existingMobDev.save();
+    
+        return this.sendResponse(req, res, {
+          status: 200,
+          message: "Mobile Development updated successfully",
+        });
+      } catch (error) {
+        console.error(error);
+        return this.sendResponse(req, res, {
+          status: 500,
+          message: "Internal Server Error!",
+        });
+      }
+    };
+    
   }
   module.exports = { MobDev };
   

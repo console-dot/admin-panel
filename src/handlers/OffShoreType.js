@@ -46,6 +46,7 @@ class OffShoreType extends Response {
         }
       };
       updateOffShoreType = async (req, res) => {
+        const id = req.params.id;
         try {
           const {
             type, 
@@ -66,8 +67,8 @@ class OffShoreType extends Response {
             });
           }
     
-          const updatedOffshore = await OffshoreTypeModel.findOneAndUpdate(
-            {},
+          const updatedOffshore = await OffshoreTypeModel.findByIdAndUpdate(
+            id,
             {
               $set: {
                 type, 
@@ -89,7 +90,7 @@ class OffShoreType extends Response {
           return this.sendResponse(req, res, {
             status: 200,
             message: "Offshore Type updated successfully",
-            data: updatedOffshore,
+            
           });
         } catch (err) {
           console.error(err);

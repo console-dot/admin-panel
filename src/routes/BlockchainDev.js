@@ -7,4 +7,5 @@ const auth = new Auth();
 
 router.post('/', auth.authentication , handlers.addBlockchain );
 router.get('/:id', auth.authentication , handlers.getBlockchain );
+router.put('/:id', auth.authentication , handlers.updateBlockchain );
 module.exports= router;

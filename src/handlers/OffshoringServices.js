@@ -56,6 +56,49 @@ class OffshoringServices extends Response {
       });
     }
   };
+  updateOffshoringServices = async (req, res) => {
+    try {
+      const offshoringServiceId = req.params.id;
+  
+      const existingOffshoringService = await OffshoringServicesModel.findById(offshoringServiceId);
+      if (!existingOffshoringService) {
+        return this.sendResponse(req, res, {
+          status: 404,
+          message: "Offshoring Service not found",
+        });
+      }
+  
+      const description = req.body.description;
+      existingOffshoringService.description = description;
+  
+      const offshoreTypeData = {
+        type: req.body.offshoreType,
+        description: req.body.offshoreDescription,
+        advantages: req.body.offshoreAdvantages,
+        comparison: req.body.offshoreComparison,
+      };
+      let offshoreType = await OffshoreTypeModel.findOne({ type: offshoreTypeData.type });
+      if (!offshoreType) {
+        offshoreType = new OffshoreTypeModel(offshoreTypeData);
+        await offshoreType.save();
+      }
+      existingOffshoringService.offshoreType = offshoreType._id;
+  
+      await existingOffshoringService.save();
+  
+      return this.sendResponse(req, res, {
+        status: 200,
+        message: "Offshoring Service updated successfully",
+      });
+    } catch (error) {
+      console.error(error);
+      return this.sendResponse(req, res, {
+        status: 500,
+        message: "Internal Server Error!",
+      });
+    }
+  };
+  
 }
 
 module.exports = { OffshoringServices };

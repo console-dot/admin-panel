@@ -63,6 +63,51 @@ const Response = require("./Response");
         });
       }
     };
+    updateArVr = async (req, res) => {
+      try {
+        const arvrId = req.params.id;
+    
+        const existingArVr = await ArVrServiceModel.findById(arvrId);
+        if (!existingArVr) {
+          return this.sendResponse(req, res, {
+            status: 404,
+            message: "ArVr Service not found",
+          });
+        }
+    
+        existingArVr.description = req.body.description;
+        existingArVr.whyChooseDes = req.body.whyChooseDes;
+    
+        if (req.body.techName && req.body.techType && req.body.techImage) {
+
+          let techStack = await TechStackModel.findOne({ name: req.body.techName });
+          if (!techStack) {
+            techStack = new TechStackModel({
+              name: req.body.techName,
+              type: req.body.techType,
+              image: req.body.techImage,
+            });
+            await techStack.save();
+          }
+          existingArVr.techStack = techStack._id;
+        }
+    
+      
+        await existingArVr.save();
+    
+      
+        return this.sendResponse(req, res, {
+          status: 200,
+          message: "ArVr updated successfully",
+        });
+      } catch (error) {
+        console.error(error);
+        return this.sendResponse(req, res, {
+          status: 500,
+          message: "Internal Server Error!",
+        });
+      }
+    };
   }
   module.exports = { ArVrService };
   

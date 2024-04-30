@@ -7,5 +7,6 @@ const auth = new Auth();
 
 router.get("/:id",auth.authentication, handlers.getCustomService);
 router.post("/",auth.authentication, handlers.createCustomService);
+router.put("/:id",auth.authentication, handlers.updateCustomService);
 
 module.exports = router;

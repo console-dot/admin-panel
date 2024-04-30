@@ -63,6 +63,51 @@ const Response = require("./Response");
         });
       }
     };
+    updateUiUx = async (req, res) => {
+      try {
+        const uiuxId = req.params.id;
+    
+        const existingUiUx = await UiUxServiceModel.findById(uiuxId);
+        if (!existingUiUx) {
+          return this.sendResponse(req, res, {
+            status: 404,
+            message: "Ui/Ux Service not found",
+          });
+        }
+    
+        existingUiUx.description = req.body.description;
+        existingUiUx.whyChooseDes = req.body.whyChooseDes;
+    
+        if (req.body.techName && req.body.techType && req.body.techImage) {
+
+          let techStack = await TechStackModel.findOne({ name: req.body.techName });
+          if (!techStack) {
+            techStack = new TechStackModel({
+              name: req.body.techName,
+              type: req.body.techType,
+              image: req.body.techImage,
+            });
+            await techStack.save();
+          }
+          existingUiUx.techStack = techStack._id;
+        }
+    
+      
+        await existingUiUx.save();
+    
+      
+        return this.sendResponse(req, res, {
+          status: 200,
+          message: "Ui/Ux updated successfully",
+        });
+      } catch (error) {
+        console.error(error);
+        return this.sendResponse(req, res, {
+          status: 500,
+          message: "Internal Server Error!",
+        });
+      }
+    };
   }
   module.exports = { UiUxService };
   
