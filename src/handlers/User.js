@@ -44,6 +44,9 @@ class User extends Response {
         status: 200,
         message: "Login successful",
         token: token,
+        data: {
+          user: { userName: userExist?.userName, email: userExist?.email },
+        },
       });
     } catch (err) {
       console.error(err);
