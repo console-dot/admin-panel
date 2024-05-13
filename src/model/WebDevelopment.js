@@ -1,21 +1,22 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const webDevelopment = mongoose.Schema({
-    description:{
-        type:String,
-        required:true
+  description: {
+    type: String,
+    required: false,
+  },
+  proposition: {
+    type: String,
+    required: false,
+  },
+  whyChooseUs: [],
+  techStack: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "TechStack",
     },
-    proposition:{
-        type:String,
-        required:true
-    },
-    techStack:{
-         type:mongoose.Types.ObjectId,
-        ref:"TechStack"
-    },
-    whyChooseDes:[]
+  ],
+});
 
-})
-
-const WebDevelopmentModel = mongoose.model("WebDevelopment",webDevelopment);
-module.exports ={WebDevelopmentModel}
+const WebDevelopmentModel = mongoose.model("WebDevelopment", webDevelopment);
+module.exports = { WebDevelopmentModel };

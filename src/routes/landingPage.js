@@ -5,7 +5,7 @@ const { Auth } = require("../middleware");
 const handlers = new LandingPages();
 const auth = new Auth();
 
-router.get("/:id",auth.authentication, handlers.getLandingPage);
+router.get("/",auth.authentication, handlers.getLandingPage);
 router.post("/",auth.authentication, handlers.addLandingPage);
 router.put("/:id",auth.authentication, handlers.updateLandingPage);
 

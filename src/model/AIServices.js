@@ -1,17 +1,21 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const artificialIntelligence = mongoose.Schema({
-    description:{
-        type:String,
-        required:true
+  description: {
+    type: String,
+    required: true,
+  },
+  whyChooseUs: [],
+  techStack: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "TechStack",
     },
-    whyChoose:[],
-    techStack:{
-        type: mongoose.Types.ObjectId,
-        ref:'TechStack'
-    }
+  ],
+});
 
-})
-
-const ArtificialIntelligenceModel = mongoose.model("ArtificialIntelligence",artificialIntelligence);
-module.exports ={ArtificialIntelligenceModel}
+const ArtificialIntelligenceModel = mongoose.model(
+  "ArtificialIntelligence",
+  artificialIntelligence
+);
+module.exports = { ArtificialIntelligenceModel };

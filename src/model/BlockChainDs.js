@@ -1,17 +1,18 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const blockChainDS = mongoose.Schema({
-    description:{
-        type:String,
-        required:true
+  description: {
+    type: String,
+    required: false,
+  },
+  techStack: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "TechStack",
     },
-    techStack:{
-        type:mongoose.Types.ObjectId,
-        ref:"TechStack"
-    },
-    whyChoose:[]
+  ],
+  whyChooseUs: [],
+});
 
-})
-
-const BlockChainDSModel = mongoose.model("BlockChainDS",blockChainDS);
-module.exports ={BlockChainDSModel}
+const BlockChainDSModel = mongoose.model("BlockChainDS", blockChainDS);
+module.exports = { BlockChainDSModel };

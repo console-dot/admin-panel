@@ -5,18 +5,19 @@ const {
   OffshoreTypeModel,
   TestimonialModel,
   ExpertiseModel,
+  OffshoringServicesModel,
 } = require("../model");
 const Response = require("./Response");
 
 class LandingPages extends Response {
   getLandingPage = async (req, res) => {
     try {
-      const landingPage = await LandingModel.findById(req.params.id)
+      const landingPage = await LandingModel.find()
         .populate("intro")
         .populate("about")
         .populate("offshoreType")
-        .populate("testimonial")
-        .populate("expertise");
+        .populate("testimonial");
+      // .populate("expertise");
 
       if (!landingPage) {
         return this.sendResponse(req, res, {
@@ -24,10 +25,31 @@ class LandingPages extends Response {
           message: "Landing page not found",
         });
       }
+
+      const offshoringService = await OffshoringServicesModel.find().populate(
+        "offshoreType"
+      );
+
+      const expertise = await ExpertiseModel.find();
+
+      let modified = landingPage[0].toObject();
+
+      if (offshoringService) {
+        modified.offshoreComparison = offshoringService;
+      } else {
+        modified.offshoreComparison = [];
+      }
+
+      if (expertise) {
+        modified.expertises = expertise;
+      } else {
+        modified.expertises = [];
+      }
+
       return this.sendResponse(req, res, {
         status: 201,
         message: "Landing page retrieved successfully",
-        data:landingPage
+        data: modified,
       });
     } catch (error) {
       console.error(error);
@@ -39,6 +61,7 @@ class LandingPages extends Response {
   };
   addLandingPage = async (req, res) => {
     try {
+      console.log("add", req.body);
       const introData = {
         heroDescription: req.body.heroDescription,
         footerDescription: req.body.footerDescription,
@@ -52,31 +75,25 @@ class LandingPages extends Response {
       const aboutData = {
         description: req.body.aboutDescription,
       };
-
-      const offshoreTypeData = {
-        type: req.body.offshoreType,
-        description: req.body.offshoreDescription,
-        advantages: req.body.offshoreAdvantages,
-        comparison: req.body.offshoreComparison,
-      };
+      // console.log("test", req.body?.testimonials[0]);
 
       const testimonialData = {
-        image: req.body.testimonialImage,
-        fullName: req.body.testimonialFullName,
-        description: req.body.testimonialDescription,
-        designation: req.body.testimonialDesignation,
+        image: req.body?.testimonials[0].img,
+        fullName: req.body?.testimonials[0].name,
+        description: req.body?.testimonials[0].description,
+        designation: req.body?.testimonials[0].designation,
       };
+      // console.log("exp", req.body?.expertises[0]);
 
       const expertiseData = {
-        image: req.body.expertiseImage,
-        name: req.body.expertiseName,
-        description: req.body.expertiseDescription,
+        image: req.body?.expertises[0].expertisesImg,
+        name: req.body?.expertises[0].expertiseName,
+        description: req.body?.expertises[0]?.expertisesDescription,
       };
 
       // Create each document in the database
       const intro = new IntroModel(introData);
       const about = new AboutModel(aboutData);
-      const offshoreType = new OffshoreTypeModel(offshoreTypeData);
       const testimonial = new TestimonialModel(testimonialData);
       const expertise = new ExpertiseModel(expertiseData);
 
@@ -84,7 +101,6 @@ class LandingPages extends Response {
       await Promise.all([
         intro.save(),
         about.save(),
-        offshoreType.save(),
         testimonial.save(),
         expertise.save(),
       ]);
@@ -93,7 +109,6 @@ class LandingPages extends Response {
       const landingPage = new LandingModel({
         intro: intro._id,
         about: about._id,
-        offshoreType: offshoreType._id,
         testimonial: testimonial._id,
         expertise: expertise._id,
       });
@@ -105,7 +120,6 @@ class LandingPages extends Response {
       ).populate("intro about offshoreType testimonial expertise");
 
       return this.sendResponse(req, res, {
-        
         message: "Landing page created successfully",
         status: 201,
       });
@@ -121,7 +135,7 @@ class LandingPages extends Response {
   updateLandingPage = async (req, res) => {
     try {
       const landingPageId = req.params.id;
-  
+
       // Check if landing page exists
       const existingLandingPage = await LandingModel.findById(landingPageId);
       if (!existingLandingPage) {
@@ -130,7 +144,7 @@ class LandingPages extends Response {
           message: "Landing page not found",
         });
       }
-  
+
       // Update intro data
       const introData = {
         heroDescription: req.body.heroDescription,
@@ -142,13 +156,13 @@ class LandingPages extends Response {
         workExperience: req.body.workExperience,
       };
       await IntroModel.findByIdAndUpdate(existingLandingPage.intro, introData);
-  
+
       // Update about data
       const aboutData = {
         description: req.body.aboutDescription,
       };
       await AboutModel.findByIdAndUpdate(existingLandingPage.about, aboutData);
-  
+
       // Update offshore type data
       const offshoreTypeData = {
         type: req.body.offshoreType,
@@ -156,8 +170,11 @@ class LandingPages extends Response {
         advantages: req.body.offshoreAdvantages,
         comparison: req.body.offshoreComparison,
       };
-      await OffshoreTypeModel.findByIdAndUpdate(existingLandingPage.offshoreType, offshoreTypeData);
-  
+      await OffshoreTypeModel.findByIdAndUpdate(
+        existingLandingPage.offshoreType,
+        offshoreTypeData
+      );
+
       // Update testimonial data
       const testimonialData = {
         image: req.body.testimonialImage,
@@ -165,16 +182,22 @@ class LandingPages extends Response {
         description: req.body.testimonialDescription,
         designation: req.body.testimonialDesignation,
       };
-      await TestimonialModel.findByIdAndUpdate(existingLandingPage.testimonial, testimonialData);
-  
+      await TestimonialModel.findByIdAndUpdate(
+        existingLandingPage.testimonial,
+        testimonialData
+      );
+
       // Update expertise data
       const expertiseData = {
         image: req.body.expertiseImage,
         name: req.body.expertiseName,
         description: req.body.expertiseDescription,
       };
-      await ExpertiseModel.findByIdAndUpdate(existingLandingPage.expertise, expertiseData);
-  
+      await ExpertiseModel.findByIdAndUpdate(
+        existingLandingPage.expertise,
+        expertiseData
+      );
+
       // Respond with success message
       return this.sendResponse(req, res, {
         status: 200,
@@ -188,6 +211,5 @@ class LandingPages extends Response {
       });
     }
   };
-  
 }
 module.exports = { LandingPages };
