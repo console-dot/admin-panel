@@ -5,14 +5,15 @@ const productRS = mongoose.Schema({
     type: String,
     required: true,
   },
-  keyComponents: [{
-    marketAnalysis: { type: String },
-    client: { type: String },
-    feasibility: { type: String },
-    roadMap: { type: String }
-  }],
-  whyChooseDes:[]
-  
+  keyComponents: [
+    {
+      marketAnalysis: { type: String },
+      client: { type: String },
+      feasibility: { type: String },
+      roadMap: { type: String },
+    },
+  ],
+  whyChooseUs: [],
 });
 
 const ProductRSModel = mongoose.model("ProductRS", productRS);

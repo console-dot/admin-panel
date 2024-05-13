@@ -1,118 +1,106 @@
-
 const { TechStackModel, MobileDevelopmentModel } = require("../model");
 const Response = require("./Response");
-  
-  class MobDev extends Response {
-    getMobDev = async (req, res) => {
-        try {
-          const mobDevs = await MobileDevelopmentModel.findById(
-            req.params.id
-          ).populate("techStack");
-    
-          if (!mobDevs) {
-            return this.sendResponse(req, res, {
-              status: 404,
-              message: "Mobile Development not found",
-            });
-          }
-          return this.sendResponse(req, res, {
-            status: 201,
-            message: "Mobile Development retrieved successfully",
-            data: mobDevs,
-          });
-        } catch (error) {
-          console.error(error);
-          return this.sendResponse(req, res, {
-            status: 500,
-            message: "Internal Server Error!",
-          });
-        }
-      };
-    addMobDev = async (req, res) => {
-      try {
-        const description = req.body.description;
-        const proposition= req.body.proposition;
-        const whyChooseDes= req.body.whyChooseDes;
-        const techName = req.body.techName;
-        const techType = req.body.techType;
-        const techImage = req.body.techImage;
-        
-        const newTechStack = new TechStackModel({
-            name:techName,
-            type:techType,
-            image: techImage
-        })
-        await newTechStack.save();
 
-        const newWebDev = new MobileDevelopmentModel({
-            description:description,
-            proposition:proposition,
-            whyChoose: whyChooseDes,
-            techStack: newTechStack._id
-        })
-        await newWebDev.save();
+class MobDev extends Response {
+  getMobDev = async (req, res) => {
+    try {
+      const mobDevs = await MobileDevelopmentModel.findById(
+        req.params.id
+      ).populate("techStack");
 
+      if (!mobDevs) {
         return this.sendResponse(req, res, {
-          message: "Mobile Development page created successfully",
-          status: 201,
-        });
-      } catch (error) {
-        console.log(error);
-        return this.sendResponse(req, res, {
-          data: null,
-          message: "Internal Server Error!",
-          status: 500,
+          status: 404,
+          message: "Mobile Development not found",
         });
       }
-    };
-    updateMobDev = async (req, res) => {
-      try {
-        const mobDevId = req.params.id;
-    
+      return this.sendResponse(req, res, {
+        status: 201,
+        message: "Mobile Development retrieved successfully",
+        data: mobDevs,
+      });
+    } catch (error) {
+      console.error(error);
+      return this.sendResponse(req, res, {
+        status: 500,
+        message: "Internal Server Error!",
+      });
+    }
+  };
+  addMobDev = async (req, res) => {
+    try {
+      const { description, proposition, whyChooseUs, techStack } = req.body;
 
-        const existingMobDev = await MobileDevelopmentModel.findById(mobDevId);
-        if (!existingMobDev) {
-          return this.sendResponse(req, res, {
-            status: 404,
-            message: "Mobile Development not found",
-          });
-        }
-    
+      // Create a new MobDevelopment instance
+      const newMobDevelopment = new MobileDevelopmentModel({
+        description,
+        proposition,
+        whyChooseUs,
+        techStack,
+      });
+      // Save the new MobDevelopment instance to the database
+      const savedMobDevelopment = await newMobDevelopment.save();
 
-        existingMobDev.description = req.body.description;
-        existingMobDev.proposition = req.body.proposition;
-        existingMobDev.whyChooseDes = req.body.whyChooseDes;
-    
+      return this.sendResponse(req, res, {
+        message: "Mobile Development page created successfully",
+        status: 201,
+      });
+    } catch (error) {
+      console.log(error);
+      return this.sendResponse(req, res, {
+        data: null,
+        message: "Internal Server Error!",
+        status: 500,
+      });
+    }
+  };
+  updateMobDev = async (req, res) => {
+    try {
+      const mobDevId = req.params.id;
 
-        if (req.body.techName && req.body.techType && req.body.techImage) {
-
-          let techStack = await TechStackModel.findOne({ name: req.body.techName });
-          if (!techStack) {
-            techStack = new TechStackModel({
-              name: req.body.techName,
-              type: req.body.techType,
-              image: req.body.techImage,
-            });
-            await techStack.save();
-          }
-          existingMobDev.techStack = techStack._id;
-        }
-    
-        await existingMobDev.save();
-    
+      const existingMobDev = await MobileDevelopmentModel.findById(mobDevId);
+      if (!existingMobDev) {
         return this.sendResponse(req, res, {
-          status: 200,
-          message: "Mobile Development updated successfully",
-        });
-      } catch (error) {
-        console.error(error);
-        return this.sendResponse(req, res, {
-          status: 500,
-          message: "Internal Server Error!",
+          status: 404,
+          message: "Mobile Development not found",
         });
       }
-    };
-    
-  }
-  module.exports = { MobDev };
-  
+
+      // Extract the fields to update from the request body
+      const { description, proposition, whyChooseUs } = req.body;
+
+      existingMobDev.description = description || existingMobDev?.description;
+      existingMobDev.proposition = proposition || existingMobDev?.proposition;
+      existingMobDev.whyChooseUs = whyChooseUs || existingMobDev?.whyChooseUs;
+
+      // if (req.body.techName && req.body.techType && req.body.techImage) {
+      //   let techStack = await TechStackModel.findOne({
+      //     name: req.body.techName,
+      //   });
+      //   if (!techStack) {
+      //     techStack = new TechStackModel({
+      //       name: req.body.techName,
+      //       type: req.body.techType,
+      //       image: req.body.techImage,
+      //     });
+      //     await techStack.save();
+      //   }
+      //   existingMobDev.techStack = techStack._id;
+      // }
+
+      await existingMobDev.save();
+
+      return this.sendResponse(req, res, {
+        status: 200,
+        message: "Mobile Development updated successfully",
+      });
+    } catch (error) {
+      console.error(error);
+      return this.sendResponse(req, res, {
+        status: 500,
+        message: "Internal Server Error!",
+      });
+    }
+  };
+}
+module.exports = { MobDev };

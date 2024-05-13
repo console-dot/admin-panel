@@ -5,8 +5,10 @@ const cors = require("cors");
 const Auth = require("./src/middleware/Auth");
 const app = express();
 const router = require("./src/routes");
-app.use(cors());
+const file = require("express-fileupload");
 
+app.use(cors());
+app.use(file());
 app.use(express.json());
 app.use("/api/v1", router);
 

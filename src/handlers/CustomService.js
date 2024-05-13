@@ -4,9 +4,7 @@ const Response = require("./Response");
 class CustomService extends Response {
   getCustomService = async (req, res) => {
     try {
-      const customService = await CustomServiceModel.findById(
-        req.params.id
-      );
+      const customService = await CustomServiceModel.find();
 
       if (!customService) {
         return this.sendResponse(req, res, {
@@ -29,19 +27,22 @@ class CustomService extends Response {
   };
   createCustomService = async (req, res) => {
     try {
-      const description = req.body.description;
-      const proposition = req.body.proposition;
-      const whyChooseDes= req.body.whyChooseDes;
-      const delivers = req.body.delivers;
-       
+      const { description, proposition, whyChooseDes, whyChooseUs, delivers } =
+        req.body;
+
+      // Create a new CustomService instance
       const newCustomService = new CustomServiceModel({
-        description: description,
-        proposition: proposition,
-        whyChooseDes:whyChooseDes,
-        delivers:delivers
+        description,
+        proposition,
+        whyChooseDes,
+        whyChooseUs,
+        delivers,
       });
-      await newCustomService.save();
+      // Save the new CustomService instance to the database
+      const savedCustomService = await newCustomService.save();
+
       return this.sendResponse(req, res, {
+        data: savedCustomService,
         message: "Custom Service page created successfully",
         status: 201,
       });
@@ -56,23 +57,30 @@ class CustomService extends Response {
   };
   updateCustomService = async (req, res) => {
     try {
-      const customServiceId = req.params.id;
-  
-      const existingCustomService = await CustomServiceModel.findById(customServiceId);
-      if (!existingCustomService) {
+      const { id } = req.params;
+
+      let customService = await CustomServiceModel.findById(id);
+      if (!customService) {
         return this.sendResponse(req, res, {
           status: 404,
           message: "Custom Service not found",
         });
       }
-  
-      existingCustomService.description = req.body.description;
-      existingCustomService.proposition = req.body.proposition;
-      existingCustomService.whyChooseDes = req.body.whyChooseDes;
-      existingCustomService.delivers = req.body.delivers;
-  
-      await existingCustomService.save();
-  
+
+      // Extract the fields to update from the request body
+      const { description, proposition, whyChooseDes, whyChooseUs, delivers } =
+        req.body;
+
+      // Update the custom service document with the new values
+      customService.description = description || customService.description;
+      customService.proposition = proposition || customService.proposition;
+      customService.whyChooseDes = whyChooseDes || customService.whyChooseDes;
+      customService.whyChooseUs = whyChooseUs || customService.whyChooseUs;
+      customService.delivers = delivers || customService.delivers;
+
+      // Save the updated custom service document
+      const updatedCustomService = await customService.save();
+
       return this.sendResponse(req, res, {
         status: 200,
         message: "Custom Service updated successfully",
@@ -85,7 +93,6 @@ class CustomService extends Response {
       });
     }
   };
-  
 }
 
 module.exports = { CustomService };

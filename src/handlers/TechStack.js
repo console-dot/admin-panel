@@ -1,20 +1,12 @@
-
 const { TechStackModel } = require("../model");
 const Response = require("./Response");
 
 class TechStack extends Response {
   createTechStack = async (req, res) => {
     try {
-      const {
-        name,
-        type,
-        image
-      } = req.body;
+      const { name, type, image } = req.body;
 
-      if (
-        !name ||
-        !type 
-      ) {
+      if (!name || !type) {
         return this.sendResponse(req, res, {
           status: 401,
           message: "Data Incomplete",
@@ -24,7 +16,7 @@ class TechStack extends Response {
       let newData = new TechStackModel({
         name,
         type,
-        image
+        image,
       });
       await newData.save();
 
@@ -44,29 +36,22 @@ class TechStack extends Response {
 
   updateTechStack = async (req, res) => {
     try {
-      const {
-        name,
-        type,
-        image
-      } = req.body;
+      const { id } = req.params;
+      const { name, image } = req.body;
 
-      if (
-        !name ||
-        !type 
-      ) {
+      if (!name) {
         return this.sendResponse(req, res, {
           status: 400,
-          message: "Data Incomplete",
+          message: "Provide name to update",
         });
       }
 
       const updatedTechStack = await TechStackModel.findOneAndUpdate(
-        {},
+        { _id: id },
         {
           $set: {
             name,
-        type,
-        image
+            image,
           },
         },
         { new: true }
