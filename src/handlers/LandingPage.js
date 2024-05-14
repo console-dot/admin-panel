@@ -30,8 +30,12 @@ class LandingPages extends Response {
         "offshoreType"
       );
 
-      const expertise = await ExpertiseModel.find();
-      const testimonial = await TestimonialModel.find();
+      const expertise = await ExpertiseModel.find().populate({
+        path: "image",
+      });
+      const testimonial = await TestimonialModel.find().populate({
+        path: "image",
+      });
 
       let modified = landingPage[0].toObject();
 
