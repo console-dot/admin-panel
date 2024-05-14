@@ -15,8 +15,8 @@ class LandingPages extends Response {
       const landingPage = await LandingModel.find()
         .populate("intro")
         .populate("about")
-        .populate("offshoreType")
-        .populate("testimonial");
+        .populate("offshoreType");
+      // .populate("testimonial");
       // .populate("expertise");
 
       if (!landingPage) {
@@ -31,6 +31,7 @@ class LandingPages extends Response {
       );
 
       const expertise = await ExpertiseModel.find();
+      const testimonial = await TestimonialModel.find();
 
       let modified = landingPage[0].toObject();
 
@@ -44,6 +45,12 @@ class LandingPages extends Response {
         modified.expertises = expertise;
       } else {
         modified.expertises = [];
+      }
+
+      if (testimonial) {
+        modified.testimonial = testimonial;
+      } else {
+        modified.testimonial = [];
       }
 
       return this.sendResponse(req, res, {
