@@ -145,58 +145,83 @@ class LandingPages extends Response {
         });
       }
 
-      // Update intro data
-      const introData = {
-        heroDescription: req.body.heroDescription,
-        footerDescription: req.body.footerDescription,
-        email: req.body.email,
-        phone: req.body.phone,
-        address: req.body.address,
-        socialLinks: req.body.socialLinks,
-        workExperience: req.body.workExperience,
-      };
-      await IntroModel.findByIdAndUpdate(existingLandingPage.intro, introData);
+      // Update intro if data is provided
+      if (
+        req.body.heroDescription ||
+        req.body.footerDescription ||
+        req.body.email ||
+        req.body.phone ||
+        req.body.address ||
+        req.body.socialLinks ||
+        req.body.workExperience
+      ) {
+        const introUpdateData = {};
+        if (req.body.heroDescription)
+          introUpdateData.heroDescription = req.body.heroDescription;
+        if (req.body.footerDescription)
+          introUpdateData.footerDescription = req.body.footerDescription;
+        if (req.body.email) introUpdateData.email = req.body.email;
+        if (req.body.phone) introUpdateData.phone = req.body.phone;
+        if (req.body.address) introUpdateData.address = req.body.address;
+        if (req.body.socialLinks)
+          introUpdateData.socialLinks = req.body.socialLinks;
+        if (req.body.workExperience)
+          introUpdateData.workExperience = req.body.workExperience;
 
-      // Update about data
-      const aboutData = {
-        description: req.body.aboutDescription,
-      };
-      await AboutModel.findByIdAndUpdate(existingLandingPage.about, aboutData);
+        await IntroModel.findByIdAndUpdate(
+          existingLandingPage.intro._id,
+          introUpdateData,
+          { new: true }
+        );
+      }
 
-      // Update offshore type data
-      const offshoreTypeData = {
-        type: req.body.offshoreType,
-        description: req.body.offshoreDescription,
-        advantages: req.body.offshoreAdvantages,
-        comparison: req.body.offshoreComparison,
-      };
-      await OffshoreTypeModel.findByIdAndUpdate(
-        existingLandingPage.offshoreType,
-        offshoreTypeData
-      );
+      // Update about if data is provided
+      if (req.body.aboutDescription) {
+        await AboutModel.findByIdAndUpdate(
+          existingLandingPage.about._id,
+          {
+            description: req.body.aboutDescription,
+          },
+          { new: true }
+        );
+      }
 
-      // Update testimonial data
-      const testimonialData = {
-        image: req.body.testimonialImage,
-        fullName: req.body.testimonialFullName,
-        description: req.body.testimonialDescription,
-        designation: req.body.testimonialDesignation,
-      };
-      await TestimonialModel.findByIdAndUpdate(
-        existingLandingPage.testimonial,
-        testimonialData
-      );
+      // const testimonialUpdate = {};
+      // if (req.body.testimonials && req.body.testimonials[0]) {
+      //   if (req.body.testimonials[0].img !== undefined)
+      //     testimonialUpdate.image = req.body.testimonials[0].img;
+      //   if (req.body.testimonials[0].name !== undefined)
+      //     testimonialUpdate.fullName = req.body.testimonials[0].name;
+      //   if (req.body.testimonials[0].description !== undefined)
+      //     testimonialUpdate.description = req.body.testimonials[0].description;
+      //   if (req.body.testimonials[0].designation !== undefined)
+      //     testimonialUpdate.designation = req.body.testimonials[0].designation;
+      // }
 
-      // Update expertise data
-      const expertiseData = {
-        image: req.body.expertiseImage,
-        name: req.body.expertiseName,
-        description: req.body.expertiseDescription,
-      };
-      await ExpertiseModel.findByIdAndUpdate(
-        existingLandingPage.expertise,
-        expertiseData
-      );
+      // const expertiseUpdate = {};
+      // if (req.body.expertises && req.body.expertises[0]) {
+      //   if (req.body.expertises[0].expertisesImg !== undefined)
+      //     expertiseUpdate.image = req.body.expertises[0].expertisesImg;
+      //   if (req.body.expertises[0].expertiseName !== undefined)
+      //     expertiseUpdate.name = req.body.expertises[0].expertiseName;
+      //   if (req.body.expertises[0].expertisesDescription !== undefined)
+      //     expertiseUpdate.description =
+      //       req.body.expertises[0].expertisesDescription;
+      // }
+
+      // if (Object.keys(testimonialUpdate).length > 0)
+      //   await TestimonialModel.findByIdAndUpdate(
+      //     existingLandingPage.testimonial._id,
+      //     testimonialUpdate,
+      //     { new: true }
+      //   );
+
+      // if (Object.keys(expertiseUpdate).length > 0)
+      //   await ExpertiseModel.findByIdAndUpdate(
+      //     existingLandingPage.expertise._id,
+      //     expertiseUpdate,
+      //     { new: true }
+      //   );
 
       // Respond with success message
       return this.sendResponse(req, res, {
