@@ -5,7 +5,7 @@ const { Auth } = require("../middleware");
 const handlers = new ProductRS();
 const auth = new Auth();
 
-router.get("/:id",auth.authentication, handlers.getProductRS);
+router.get("/",auth.authentication, handlers.getProductRS);
 router.post("/",auth.authentication, handlers.addProductRS);
 router.put("/:id",auth.authentication, handlers.updateProductRS);
 

@@ -84,6 +84,7 @@ class CustomService extends Response {
       return this.sendResponse(req, res, {
         status: 200,
         message: "Custom Service updated successfully",
+        data: updatedCustomService,
       });
     } catch (error) {
       console.error(error);

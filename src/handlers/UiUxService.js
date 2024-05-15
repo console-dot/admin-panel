@@ -70,16 +70,18 @@ class UiUxService extends Response {
       }
 
       // Extract the fields to update from the request body
-      const { description, whyChooseUs } = req.body;
+      const { description, whyChooseUs, techStack } = req.body;
 
       existingUiUx.description = description || existingUiUx?.description;
       existingUiUx.whyChooseUs = whyChooseUs || existingUiUx?.whyChooseUs;
+      existingUiUx.techStack = techStack || existingUiUx?.techStack;
 
-      await existingUiUx.save();
+      const updatedData = await existingUiUx.save();
 
       return this.sendResponse(req, res, {
         status: 200,
         message: "Ui/Ux updated successfully",
+        data: updatedData,
       });
     } catch (error) {
       console.error(error);

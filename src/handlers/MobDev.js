@@ -67,32 +67,19 @@ class MobDev extends Response {
       }
 
       // Extract the fields to update from the request body
-      const { description, proposition, whyChooseUs } = req.body;
+      const { description, proposition, whyChooseUs, techStack } = req.body;
 
       existingMobDev.description = description || existingMobDev?.description;
       existingMobDev.proposition = proposition || existingMobDev?.proposition;
       existingMobDev.whyChooseUs = whyChooseUs || existingMobDev?.whyChooseUs;
+      existingMobDev.techStack = techStack || existingMobDev?.techStack;
 
-      // if (req.body.techName && req.body.techType && req.body.techImage) {
-      //   let techStack = await TechStackModel.findOne({
-      //     name: req.body.techName,
-      //   });
-      //   if (!techStack) {
-      //     techStack = new TechStackModel({
-      //       name: req.body.techName,
-      //       type: req.body.techType,
-      //       image: req.body.techImage,
-      //     });
-      //     await techStack.save();
-      //   }
-      //   existingMobDev.techStack = techStack._id;
-      // }
-
-      await existingMobDev.save();
+      const updatedData = await existingMobDev.save();
 
       return this.sendResponse(req, res, {
         status: 200,
         message: "Mobile Development updated successfully",
+        data: updatedData,
       });
     } catch (error) {
       console.error(error);

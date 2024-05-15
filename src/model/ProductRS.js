@@ -7,10 +7,10 @@ const productRS = mongoose.Schema({
   },
   keyComponents: [
     {
-      marketAnalysis: { type: String },
-      client: { type: String },
-      feasibility: { type: String },
-      roadMap: { type: String },
+      marketAnalysis: [],
+      client: [],
+      feasibility: [],
+      roadMap: [],
     },
   ],
   whyChooseUs: [],

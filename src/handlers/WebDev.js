@@ -70,11 +70,12 @@ class WebDev extends Response {
         });
       }
       // Extract the fields to update from the request body
-      const { description, proposition, whyChooseUs } = req.body;
+      const { description, proposition, whyChooseUs, techStack } = req.body;
 
       existingWebDev.description = description || existingWebDev?.description;
       existingWebDev.proposition = proposition || existingWebDev?.proposition;
       existingWebDev.whyChooseUs = whyChooseUs || existingWebDev?.whyChooseUs;
+      existingWebDev.techStack = techStack || existingWebDev?.techStack;
 
       // if (req.body.techName && req.body.techType && req.body.techImage) {
       //   let techStack = await TechStackModel.findOne({
@@ -91,11 +92,12 @@ class WebDev extends Response {
       //   existingWebDev.techStack = techStack._id;
       // }
 
-      await existingWebDev.save();
+      const updatedData = await existingWebDev.save();
 
       return this.sendResponse(req, res, {
         status: 200,
         message: "Web Development updated successfully",
+        data: updatedData,
       });
     } catch (error) {
       console.error(error);

@@ -4,7 +4,7 @@ const Response = require("./Response");
 class ProductRS extends Response {
   getProductRS = async (req, res) => {
     try {
-      const productRS = await ProductRSModel.findById(req.params.id);
+      const productRS = await ProductRSModel.findOne();
 
       if (!productRS) {
         return this.sendResponse(req, res, {
@@ -28,6 +28,13 @@ class ProductRS extends Response {
   addProductRS = async (req, res) => {
     try {
       const { description, keyComponents, whyChooseUs } = req.body;
+
+      if (!description || !keyComponents || !whyChooseUs) {
+        return this.sendResponse(req, res, {
+          status: 401,
+          message: "Data Incomplete",
+        });
+      }
 
       // Create a new ProductRS instance
       const newProductRS = new ProductRSModel({
@@ -78,6 +85,7 @@ class ProductRS extends Response {
       return this.sendResponse(req, res, {
         status: 200,
         message: "Product RS page updated successfully",
+        data: updatedProductRS,
       });
     } catch (error) {
       console.error(error);

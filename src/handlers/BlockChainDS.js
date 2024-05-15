@@ -68,38 +68,24 @@ class BlockchainDS extends Response {
         });
       }
       // Extract the fields to update from the request body
-      const { description, whyChooseUs } = req.body;
+      const { description, whyChooseUs, techStack } = req.body;
 
       // Update description and whyChooseDes
       existingBlockchainDS.description =
         description || existingBlockchainDS?.description;
       existingBlockchainDS.whyChooseUs =
         whyChooseUs || existingBlockchainDS?.whyChooseUs;
-
-      // Update tech stack if provided
-      // if (req.body.techName && req.body.techType && req.body.techImage) {
-      //   // Check if tech stack exists, if not create a new one
-      //   let techStack = await TechStackModel.findOne({
-      //     name: req.body.techName,
-      //   });
-      //   if (!techStack) {
-      //     techStack = new TechStackModel({
-      //       name: req.body.techName,
-      //       type: req.body.techType,
-      //       image: req.body.techImage,
-      //     });
-      //     await techStack.save();
-      //   }
-      //   existingBlockchainDS.techStack = techStack._id;
-      // }
+      existingBlockchainDS.techStack =
+        techStack || existingBlockchainDS?.techStack;
 
       // Save the updated blockchain development
-      await existingBlockchainDS.save();
+      const updatedData = await existingBlockchainDS.save();
 
       // Respond with success message
       return this.sendResponse(req, res, {
         status: 200,
         message: "Blockchain Development updated successfully",
+        data: updatedData,
       });
     } catch (error) {
       console.error(error);

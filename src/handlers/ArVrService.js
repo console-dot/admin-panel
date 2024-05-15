@@ -65,16 +65,18 @@ class ArVrService extends Response {
         });
       }
       // Extract the fields to update from the request body
-      const { description, whyChooseUs } = req.body;
+      const { description, whyChooseUs, techStack } = req.body;
 
       existingArVr.description = description || existingArVr?.description;
       existingArVr.whyChooseUs = whyChooseUs || existingArVr?.whyChooseUs;
+      existingArVr.techStack = techStack || existingArVr?.techStack;
 
-      await existingArVr.save();
+      const updatedData = await existingArVr.save();
 
       return this.sendResponse(req, res, {
         status: 200,
         message: "ArVr updated successfully",
+        data: updatedData,
       });
     } catch (error) {
       console.error(error);
