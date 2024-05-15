@@ -77,6 +77,29 @@ class TechStack extends Response {
       });
     }
   };
+
+  deleteTechStack = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const deletedTechStack = await TechStackModel.findByIdAndDelete(id);
+      if (!deletedTechStack) {
+        return this.sendResponse(req, res, {
+          status: 404,
+          message: "TechStack not found",
+        });
+      }
+      return this.sendResponse(req, res, {
+        status: 200,
+        message: "TechStack deleted successfully",
+      });
+    } catch (err) {
+      console.error(err);
+      return this.sendResponse(req, res, {
+        status: 500,
+        message: "Internal server error",
+      });
+    }
+  };
 }
 
 module.exports = { TechStack };

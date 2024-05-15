@@ -72,13 +72,14 @@ class AIService extends Response {
       }
 
       // Extract the fields to update from the request body
-      const { description, whyChooseUs } = req.body;
+      const { description, whyChooseUs, techStack } = req.body;
 
       // Update description and whyChooseDes
       existingAiService.description =
         description || existingAiService?.description;
       existingAiService.whyChooseUs =
         whyChooseUs || existingAiService?.whyChooseUs;
+      existingAiService.techStack = techStack || existingAiService?.techStack;
 
       // Save the updated document
       const updatedAI = await existingAiService.save();
