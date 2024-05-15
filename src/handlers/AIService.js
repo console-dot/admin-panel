@@ -8,9 +8,9 @@ const Response = require("./Response");
 class AIService extends Response {
   getAIService = async (req, res) => {
     try {
-      const aiService = await ArtificialIntelligenceModel.findById(
-        req.params.id
-      ).populate("techStack");
+      const aiService = await ArtificialIntelligenceModel.findOne().populate(
+        "techStack"
+      );
 
       if (!aiService) {
         return this.sendResponse(req, res, {

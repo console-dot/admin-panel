@@ -4,9 +4,9 @@ const Response = require("./Response");
 class BlockchainDS extends Response {
   getBlockchain = async (req, res) => {
     try {
-      const blockchainDS = await BlockChainDSModel.findById(
-        req.params.id
-      ).populate("techStack");
+      const blockchainDS = await BlockChainDSModel.findOne().populate(
+        "techStack"
+      );
 
       if (!blockchainDS) {
         return this.sendResponse(req, res, {

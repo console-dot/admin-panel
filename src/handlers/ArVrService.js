@@ -4,9 +4,9 @@ const Response = require("./Response");
 class ArVrService extends Response {
   getArVrService = async (req, res) => {
     try {
-      const arvrService = await ArVrServiceModel.findById(
-        req.params.id
-      ).populate("techStack");
+      const arvrService = await ArVrServiceModel.findOne().populate(
+        "techStack"
+      );
 
       if (!arvrService) {
         return this.sendResponse(req, res, {

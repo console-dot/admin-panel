@@ -6,7 +6,7 @@ const auth = new Auth();
 
 
 router.post('/', auth.authentication , handlers.addUiUxService );
-router.get('/:id', auth.authentication , handlers.getUiUxService );
+router.get('/', auth.authentication , handlers.getUiUxService );
 router.put('/:id', auth.authentication , handlers.updateUiUx );
 
 module.exports= router;

@@ -8,9 +8,9 @@ const Response = require("./Response");
 class UiUxService extends Response {
   getUiUxService = async (req, res) => {
     try {
-      const uiuxService = await UiUxServiceModel.findById(
-        req.params.id
-      ).populate("techStack");
+      const uiuxService = await UiUxServiceModel.findOne().populate(
+        "techStack"
+      );
 
       if (!uiuxService) {
         return this.sendResponse(req, res, {
