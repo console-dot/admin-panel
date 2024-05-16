@@ -15,9 +15,9 @@ class LandingPages extends Response {
       const landingPage = await LandingModel.find()
         .populate("intro")
         .populate("about")
-        .populate("offshoreType");
-      // .populate("testimonial");
-      // .populate("expertise");
+        .populate("offshoreType")
+        .populate("testimonial")
+        .populate("expertise");
 
       if (!landingPage) {
         return this.sendResponse(req, res, {
@@ -30,31 +30,13 @@ class LandingPages extends Response {
         "offshoreType"
       );
 
-      const expertise = await ExpertiseModel.find().populate({
-        path: "image",
-      });
-      const testimonial = await TestimonialModel.find().populate({
-        path: "image",
-      });
-
       let modified = landingPage[0].toObject();
+      // let modified = landingPage;
 
       if (offshoringService) {
         modified.offshoreComparison = offshoringService;
       } else {
         modified.offshoreComparison = [];
-      }
-
-      if (expertise) {
-        modified.expertises = expertise;
-      } else {
-        modified.expertises = [];
-      }
-
-      if (testimonial) {
-        modified.testimonial = testimonial;
-      } else {
-        modified.testimonial = [];
       }
 
       return this.sendResponse(req, res, {
@@ -73,6 +55,7 @@ class LandingPages extends Response {
   addLandingPage = async (req, res) => {
     try {
       console.log("add", req.body);
+      const { testimonials, expertises } = req.body;
       const introData = {
         heroDescription: req.body.heroDescription,
         footerDescription: req.body.footerDescription,
@@ -105,23 +88,25 @@ class LandingPages extends Response {
       // Create each document in the database
       const intro = new IntroModel(introData);
       const about = new AboutModel(aboutData);
-      const testimonial = new TestimonialModel(testimonialData);
-      const expertise = new ExpertiseModel(expertiseData);
+      // const testimonial = new TestimonialModel(testimonialData);
+      // const expertise = new ExpertiseModel(expertiseData);
 
       // Save all documents to the database
       await Promise.all([
         intro.save(),
         about.save(),
-        testimonial.save(),
-        expertise.save(),
+        // testimonial.save(),
+        // expertise.save(),
       ]);
 
       // Now that we have all IDs, create the Landing Page
       const landingPage = new LandingModel({
         intro: intro._id,
         about: about._id,
-        testimonial: testimonial._id,
-        expertise: expertise._id,
+        testimonial: testimonials,
+        expertise: expertises,
+        // testimonial: testimonial._id,
+        // expertise: expertise._id,
       });
       await landingPage.save();
 
@@ -197,47 +182,21 @@ class LandingPages extends Response {
         );
       }
 
-      // const testimonialUpdate = {};
-      // if (req.body.testimonials && req.body.testimonials[0]) {
-      //   if (req.body.testimonials[0].img !== undefined)
-      //     testimonialUpdate.image = req.body.testimonials[0].img;
-      //   if (req.body.testimonials[0].name !== undefined)
-      //     testimonialUpdate.fullName = req.body.testimonials[0].name;
-      //   if (req.body.testimonials[0].description !== undefined)
-      //     testimonialUpdate.description = req.body.testimonials[0].description;
-      //   if (req.body.testimonials[0].designation !== undefined)
-      //     testimonialUpdate.designation = req.body.testimonials[0].designation;
-      // }
+      // Extract the fields to update from the request body
+      const { testimonials, expertises } = req.body;
 
-      // const expertiseUpdate = {};
-      // if (req.body.expertises && req.body.expertises[0]) {
-      //   if (req.body.expertises[0].expertisesImg !== undefined)
-      //     expertiseUpdate.image = req.body.expertises[0].expertisesImg;
-      //   if (req.body.expertises[0].expertiseName !== undefined)
-      //     expertiseUpdate.name = req.body.expertises[0].expertiseName;
-      //   if (req.body.expertises[0].expertisesDescription !== undefined)
-      //     expertiseUpdate.description =
-      //       req.body.expertises[0].expertisesDescription;
-      // }
+      existingLandingPage.testimonial =
+        testimonials || existingLandingPage?.testimonial;
+      existingLandingPage.expertise =
+        expertises || existingLandingPage.expertise;
 
-      // if (Object.keys(testimonialUpdate).length > 0)
-      //   await TestimonialModel.findByIdAndUpdate(
-      //     existingLandingPage.testimonial._id,
-      //     testimonialUpdate,
-      //     { new: true }
-      //   );
-
-      // if (Object.keys(expertiseUpdate).length > 0)
-      //   await ExpertiseModel.findByIdAndUpdate(
-      //     existingLandingPage.expertise._id,
-      //     expertiseUpdate,
-      //     { new: true }
-      //   );
+      const updatedData = await existingLandingPage.save();
 
       // Respond with success message
       return this.sendResponse(req, res, {
         status: 200,
         message: "Landing page updated successfully",
+        data: updatedData,
       });
     } catch (error) {
       console.error(error);
