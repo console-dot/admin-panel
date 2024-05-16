@@ -1,22 +1,12 @@
-
 const { TestimonialModel } = require("../model/Testimonial");
 const Response = require("./Response");
 
 class Testimonials extends Response {
   createTestimonials = async (req, res) => {
     try {
-      const {
-        image,
-        fullName,
-        description,
-        designation
-      } = req.body;
+      const { image, fullName, description, designation } = req.body;
 
-      if (
-        !fullName ||
-        !description ||
-        !designation 
-      ) {
+      if (!fullName || !description || !designation) {
         return this.sendResponse(req, res, {
           status: 401,
           message: "Data Incomplete",
@@ -27,7 +17,7 @@ class Testimonials extends Response {
         image,
         fullName,
         description,
-        designation
+        designation,
       });
       await newData.save();
 
@@ -47,32 +37,17 @@ class Testimonials extends Response {
 
   updateTestimonials = async (req, res) => {
     try {
-      const {
-        image,
-        fullName,
-        description,
-        designation
-      } = req.body;
-
-      if (
-        !fullName ||
-        !description ||
-        !designation 
-      ) {
-        return this.sendResponse(req, res, {
-          status: 400,
-          message: "Data Incomplete",
-        });
-      }
+      const { id } = req.params;
+      const { image, fullName, description, designation } = req.body;
 
       const updatedTestimonials = await TestimonialModel.findOneAndUpdate(
-        {},
+        { _id: id },
         {
           $set: {
             image,
             fullName,
             description,
-            designation
+            designation,
           },
         },
         { new: true }
@@ -89,6 +64,29 @@ class Testimonials extends Response {
         status: 200,
         message: "Testimonial updated successfully",
         data: updatedTestimonials,
+      });
+    } catch (err) {
+      console.error(err);
+      return this.sendResponse(req, res, {
+        status: 500,
+        message: "Internal server error",
+      });
+    }
+  };
+
+  deleteTestimonials = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const deletedTestimonial = await TestimonialModel.findByIdAndDelete(id);
+      if (!deletedTestimonial) {
+        return this.sendResponse(req, res, {
+          status: 404,
+          message: "Testimonial not found",
+        });
+      }
+      return this.sendResponse(req, res, {
+        status: 200,
+        message: "Testimonial deleted successfully",
       });
     } catch (err) {
       console.error(err);

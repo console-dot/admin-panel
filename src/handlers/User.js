@@ -38,7 +38,7 @@ class User extends Response {
       }
 
       const token = jwt.sign({ id: userExist.email }, process.env.JWT_SECRET, {
-        expiresIn: "1h",
+        expiresIn: "1d",
       });
       return this.sendResponse(req, res, {
         status: 200,

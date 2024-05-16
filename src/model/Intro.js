@@ -1,48 +1,48 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const intro = mongoose.Schema({
-    heroDescription:{
-        type: String,
-        required: true
+  heroDescription: {
+    type: String,
+    required: true,
+  },
+  footerDescription: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  phone: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  socialLinks: [
+    {
+      name: String,
+      icon: { type: mongoose.Types.ObjectId, ref: "File" },
+      link: String,
     },
-    footerDescription:{
-        type: String,
-        required: true
+  ],
+  workExperience: {
+    countries: {
+      type: String,
     },
-    email:{
-        type: String,
-        required: true
+    expEmployees: {
+      type: String,
     },
-    phone:{
-        type: String,
-        required: true
+    scrumTeams: {
+      type: String,
     },
-    address:{
-        type: String,
-        required: true
+    fullStackDev: {
+      type: String,
     },
-    socialLinks:[
-{
-    name: String,
-    icon: { type: mongoose.Types.ObjectId , ref: 'File'}
-}
-    ],
-    workExperience:{
-        countries:{
-            type: String
-        },
-        expEmployees:{
-            type: String
-        },
-        scrumTeams:{
-            type: String
-        },
-        fullStackDev:{
-            type: String
-        },
-    }
+  },
+});
 
-})
-
-const IntroModel = mongoose.model("Intro",intro);
-module.exports ={IntroModel}
+const IntroModel = mongoose.model("Intro", intro);
+module.exports = { IntroModel };
