@@ -4,7 +4,7 @@ const Response = require("./Response");
 class CustomService extends Response {
   getCustomService = async (req, res) => {
     try {
-      const customService = await CustomServiceModel.find();
+      const customService = await CustomServiceModel.findOne();
 
       if (!customService) {
         return this.sendResponse(req, res, {

@@ -17,7 +17,7 @@ class Response {
         delete decoded?.iat;
         delete decoded?.exp;
         if (decoded)
-          token = sign(decoded, process.env.JWT_SECRET, { expiresIn: "10m" });
+          token = sign(decoded, process.env.JWT_SECRET, { expiresIn: "1h" });
       }
       return res.status(obj.status).json({ ...obj, token });
     } catch (error) {

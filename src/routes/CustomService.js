@@ -5,7 +5,7 @@ const { Auth } = require("../middleware");
 const handlers = new CustomService();
 const auth = new Auth();
 
-router.get("/:id",auth.authentication, handlers.getCustomService);
+router.get("/",auth.authentication, handlers.getCustomService);
 router.post("/",auth.authentication, handlers.createCustomService);
 router.put("/:id",auth.authentication, handlers.updateCustomService);
 

@@ -4,9 +4,8 @@ const Response = require("./Response");
 class OffshoringServices extends Response {
   getOffshoringServices = async (req, res) => {
     try {
-      const offshoringService = await OffshoringServicesModel.findById(
-        req.params.id
-      ).populate("offshoreType");
+      const offshoringService =
+        await OffshoringServicesModel.findOne().populate("offshoreType");
 
       if (!offshoringService) {
         return this.sendResponse(req, res, {
@@ -121,7 +120,7 @@ class OffshoringServices extends Response {
       const { id } = req.params; // Assuming the id is passed in the request params
 
       // Update the top and bottom descriptions if provided in the request body
-      const { topDescription, bottomDescription, offShoreType } = req.body;
+      const { topDescription, bottomDescription, offshoreType } = req.body;
 
       // Construct an object with the fields to update
       const updateFields = {};
@@ -129,12 +128,12 @@ class OffshoringServices extends Response {
       if (bottomDescription) updateFields.bottomDescription = bottomDescription;
 
       // Update the offshore service
-      await OffshoringServicesModel.findByIdAndUpdate(id, updateFields);
+      const updated = await OffshoringServicesModel.findByIdAndUpdate(id, updateFields);
 
-      // If offShoreType is provided, update associated offshore types
-      if (offShoreType) {
+      // If offshoreType is provided, update associated offshore types
+      if (offshoreType) {
         // Update or create each offshore type
-        for (const typeData of offShoreType) {
+        for (const typeData of offshoreType) {
           const { type, description, advantages, comparison } = typeData;
 
           // Update existing offshore type or create a new one if not found
@@ -149,6 +148,7 @@ class OffshoringServices extends Response {
       return this.sendResponse(req, res, {
         message: "Offshore Service updated successfully",
         status: 200,
+        data: updated,
       });
     } catch (error) {
       console.error(error); // Improved logging with error
