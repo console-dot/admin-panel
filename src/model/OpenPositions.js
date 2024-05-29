@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const openPosition = mongoose.Schema({
-    jobType:{
+    jobCategory:{
         type: String,
         required: true
     },
@@ -27,14 +27,12 @@ const openPosition = mongoose.Schema({
     },
     noOfRequest:{
         type: String,
-        required: true
+        required: false
     },
     capacity:{
         type: String,
         required: true
     }
-    
-
 })
 
 const OpenPositionModel = mongoose.model("OpenPosition",openPosition);

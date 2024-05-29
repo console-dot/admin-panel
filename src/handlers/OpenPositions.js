@@ -5,24 +5,22 @@ class OpenPosition extends Response {
   createPosition = async (req, res) => {
     try {
       const {
-        jobType,
+        jobCategory,
         experience,
         noOfPositions,
         qualifications,
         employmentType,
         designation,
-        noOfRequest,
         capacity,
       } = req.body;
 
       if (
-        !jobType ||
+        !jobCategory ||
         !experience ||
         !noOfPositions ||
         !qualifications ||
         !employmentType ||
         !designation ||
-        !noOfRequest ||
         !capacity
       ) {
         return this.sendResponse(req, res, {
@@ -32,13 +30,13 @@ class OpenPosition extends Response {
       }
 
       const newJob = new OpenPositionModel({
-        jobType,
+        jobCategory,
         experience,
         noOfPositions,
         qualifications,
         employmentType,
         designation,
-        noOfRequest,
+        noOfRequest: 0,
         capacity,
       });
 
@@ -60,26 +58,24 @@ class OpenPosition extends Response {
     try {
       const positionId = req.params.id;
       const {
-        jobType,
+        jobCategory,
         experience,
         noOfPositions,
         qualifications,
         employmentType,
         designation,
-        noOfRequest,
         capacity,
       } = req.body;
 
       const updatedPosition = await OpenPositionModel.findByIdAndUpdate(
         positionId,
         {
-          jobType,
+          jobCategory,
           experience,
           noOfPositions,
           qualifications,
           employmentType,
           designation,
-          noOfRequest,
           capacity,
         },
         { new: true }
@@ -110,7 +106,9 @@ class OpenPosition extends Response {
     try {
       const positionId = req.params.id;
 
-      const deletedPosition = await OpenPositionModel.findByIdAndDelete(positionId);
+      const deletedPosition = await OpenPositionModel.findByIdAndDelete(
+        positionId
+      );
 
       if (!deletedPosition) {
         return this.sendResponse(req, res, {
