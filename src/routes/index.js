@@ -22,6 +22,7 @@ const openPosition = require("./OpenPostion");
 const contact = require("./ContactUs");
 const file = require("./File");
 const caseStudy = require("./CaseStudy");
+const mail = require("./Mail");
 
 router.use("/signup", user);
 router.use("/login", login);
@@ -46,5 +47,6 @@ router.use("/open-positions", openPosition);
 router.use("/contact-us", contact);
 router.use("/file", file);
 router.use("/case-study", caseStudy);
+router.use("/mail", mail);
 
 module.exports = router;

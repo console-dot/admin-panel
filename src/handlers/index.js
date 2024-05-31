@@ -21,6 +21,7 @@ const { OpenPosition } = require("./OpenPositions.js");
 const { ContactUs } = require("./ContactUs.js");
 const { File } = require("./File.js");
 const { CaseStudies } = require("./CaseStudy.js");
+const { Mail } = require("./Mail");
 
 module.exports = {
   Response,
@@ -46,4 +47,5 @@ module.exports = {
   ContactUs,
   File,
   CaseStudies,
+  Mail,
 };
