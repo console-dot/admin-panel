@@ -14,9 +14,9 @@ const transporter = nodemailer.createTransport({
 class Mail extends Response {
   addMail = async (req, res) => {
     try {
-      const { senderName, from, message, subject, phone, contactMethod } =
+      const { senderName, from, model, subject, phone, contactMethod } =
         req.body;
-      if (!from || !senderName || !message) {
+      if (!from || !senderName || !model) {
         return this.sendResponse(req, res, {
           data: null,
           message: "All Fields are required",
@@ -30,8 +30,8 @@ class Mail extends Response {
         Phone: ${phone}
         Preferred Contact Method: ${contactMethod}
         
-        Message:
-        ${message}
+        Model:
+        ${model}
       `;
 
       await transporter.sendMail({
