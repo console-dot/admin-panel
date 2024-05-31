@@ -60,9 +60,17 @@ class Mail extends Response {
 
   apply = async (req, res) => {
     try {
-      const { senderName, from, message, subject, phone, contactMethod } =
-        req.body;
-      if (!from || !senderName || !message || !phone || !contactMethod) {
+      const {
+        senderName,
+        from,
+        city,
+        senderExperience,
+        gender,
+        github,
+        phone,
+        designation,
+      } = req.body;
+      if (!from || !senderName || !phone || !designation) {
         return this.sendResponse(req, res, {
           data: null,
           message: "All Fields are required",
@@ -74,20 +82,21 @@ class Mail extends Response {
         Sender Name: ${senderName}
         Sender Email: ${from}
         Phone: ${phone}
-        Preferred Contact Method: ${contactMethod}
-        
-        Message:
-        ${message}
+        City: ${city}
+        Sender Experience: ${senderExperience}
+        Gender: ${gender}
+        Github: ${github}
+        Designation: ${designation}
       `;
 
       const mailOptions = {
         from: `${senderName} <${process.env.USER_MAIL}>`,
         to: process.env.USER_MAIL,
         replyTo: from, // Set the reply-to address to the client's email address
-        subject: subject || "Contact",
+        subject: designation || "Job",
         text: fullMessage,
       };
-      
+
       if (req.files && req.files.attachment) {
         const attachment = req.files.attachment;
 
