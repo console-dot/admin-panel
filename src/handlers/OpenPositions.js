@@ -65,6 +65,7 @@ class OpenPosition extends Response {
         employmentType,
         designation,
         capacity,
+        noOfRequest,
       } = req.body;
 
       const updatedPosition = await OpenPositionModel.findByIdAndUpdate(
@@ -77,6 +78,7 @@ class OpenPosition extends Response {
           employmentType,
           designation,
           capacity,
+          noOfRequest,
         },
         { new: true }
       );
