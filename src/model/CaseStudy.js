@@ -22,6 +22,9 @@ const caseStudy = mongoose.Schema({
     type: String,
     required: true,
   },
+  projectLink: {
+    type: String,
+  },
   tech: [],
 });
 

@@ -13,6 +13,7 @@ class CaseStudies extends Response {
         images,
         description,
         tech,
+        projectLink,
       } = req.body;
 
       if (!description) {
@@ -31,6 +32,7 @@ class CaseStudies extends Response {
         images,
         description,
         tech,
+        projectLink,
       });
 
       await newCaseStudy.save();
@@ -105,6 +107,7 @@ class CaseStudies extends Response {
         images,
         description,
         tech,
+        projectLink,
       } = req.body;
 
       const updateData = {
@@ -116,6 +119,7 @@ class CaseStudies extends Response {
         ...(images && { images }),
         ...(description && { description }),
         ...(tech && { tech }),
+        ...(projectLink && { projectLink }),
       };
 
       const updatedCaseStudy = await CaseStudyModel.findByIdAndUpdate(
