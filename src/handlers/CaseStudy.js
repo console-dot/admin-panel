@@ -7,7 +7,6 @@ class CaseStudies extends Response {
       const {
         title,
         projectImage,
-        clientName,
         services,
         projectDuration,
         images,
@@ -34,7 +33,6 @@ class CaseStudies extends Response {
       const newCaseStudy = new CaseStudyModel({
         title,
         projectImage,
-        clientName,
         services,
         projectDuration,
         images,
@@ -117,7 +115,6 @@ class CaseStudies extends Response {
       const {
         title,
         projectImage,
-        clientName,
         services,
         projectDuration,
         images,
@@ -137,7 +134,6 @@ class CaseStudies extends Response {
       const updateData = {
         ...(title && { title }),
         ...(projectImage && { projectImage }),
-        ...(clientName && { clientName }),
         ...(services && { services }),
         ...(projectDuration && { projectDuration }),
         ...(images && { images }),

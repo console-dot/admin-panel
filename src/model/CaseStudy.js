@@ -8,9 +8,6 @@ const caseStudy = mongoose.Schema({
     type: mongoose.Types.ObjectId,
     ref: "File",
   },
-  clientName: {
-    type: String,
-  },
   services: {
     type: String,
   },
@@ -40,6 +37,7 @@ const caseStudy = mongoose.Schema({
   ],
   client: [
     {
+      name: String,
       description: String,
       country: String,
       industry: String,
@@ -65,7 +63,7 @@ const caseStudy = mongoose.Schema({
     type: String,
   },
   results: {
-    heading: String,
+    description: String,
     subHeadings: [
       {
         heading: String,
