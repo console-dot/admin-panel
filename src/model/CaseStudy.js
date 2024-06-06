@@ -25,7 +25,53 @@ const caseStudy = mongoose.Schema({
   projectLink: {
     type: String,
   },
-  tech: [],
+  techStack: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "TechStack",
+    },
+  ],
+  highlights: [
+    {
+      heading: String,
+      description: String,
+    },
+  ],
+  client: [
+    {
+      description: String,
+      country: String,
+      industry: String,
+      teamSize: String,
+    },
+  ],
+  product: {
+    type: String,
+  },
+  goals: [
+    {
+      heading: String,
+      description: String,
+    },
+  ],
+  challenges: [
+    {
+      heading: String,
+      description: String,
+    },
+  ],
+  solution: {
+    type: String,
+  },
+  results: {
+    heading: String,
+    subHeadings: [
+      {
+        heading: String,
+        description: String,
+      },
+    ],
+  },
 });
 
 const CaseStudyModel = mongoose.model("case_study", caseStudy);
