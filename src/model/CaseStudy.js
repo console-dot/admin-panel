@@ -25,6 +25,7 @@ const caseStudy = mongoose.Schema({
   projectLink: {
     type: String,
   },
+  tags: [],
   techStack: [
     {
       type: mongoose.Types.ObjectId,
