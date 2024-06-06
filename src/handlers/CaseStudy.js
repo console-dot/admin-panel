@@ -67,7 +67,7 @@ class CaseStudies extends Response {
 
   getAllCaseStudies = async (req, res) => {
     try {
-      const caseStudies = await CaseStudyModel.find();
+      const caseStudies = await CaseStudyModel.find().populate("techStack");
 
       return this.sendResponse(req, res, {
         status: 200,
@@ -86,7 +86,7 @@ class CaseStudies extends Response {
   getCaseStudy = async (req, res) => {
     try {
       const { id } = req.params;
-      const caseStudy = await CaseStudyModel.findById(id);
+      const caseStudy = await CaseStudyModel.findById(id).populate("techStack");
 
       if (!caseStudy) {
         return this.sendResponse(req, res, {
