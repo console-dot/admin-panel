@@ -22,6 +22,7 @@ const { ContactUs } = require("./ContactUs.js");
 const { File } = require("./File.js");
 const { CaseStudies } = require("./CaseStudy.js");
 const { Mail } = require("./Mail");
+const { HeroDescription } = require("./HeroDescription.js");
 
 module.exports = {
   Response,
@@ -48,4 +49,5 @@ module.exports = {
   File,
   CaseStudies,
   Mail,
+  HeroDescription,
 };

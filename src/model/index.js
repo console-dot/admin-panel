@@ -20,6 +20,7 @@ const { OpenPositionModel } = require("./OpenPositions");
 const { UserModel } = require("./User");
 const { ContactUsModel } = require("./ContactUs");
 const { CaseStudyModel } = require("./CaseStudy");
+const { HeroDescriptionModel } = require("./HeroDescription");
 
 module.exports = {
   IntroModel,
@@ -44,4 +45,5 @@ module.exports = {
   UserModel,
   ContactUsModel,
   CaseStudyModel,
+  HeroDescriptionModel,
 };
