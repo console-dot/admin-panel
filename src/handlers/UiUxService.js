@@ -33,10 +33,11 @@ class UiUxService extends Response {
   };
   addUiUxService = async (req, res) => {
     try {
-      const { description, whyChooseUs, techStack } = req.body;
+      const { heroDescription, description, whyChooseUs, techStack } = req.body;
 
       // Create a new newUiUxService instance
       const newUiUxService = new UiUxServiceModel({
+        heroDescription,
         description,
         whyChooseUs,
         techStack,
@@ -70,8 +71,10 @@ class UiUxService extends Response {
       }
 
       // Extract the fields to update from the request body
-      const { description, whyChooseUs, techStack } = req.body;
+      const { heroDescription, description, whyChooseUs, techStack } = req.body;
 
+      existingUiUx.heroDescription =
+        heroDescription || existingUiUx?.heroDescription;
       existingUiUx.description = description || existingUiUx?.description;
       existingUiUx.whyChooseUs = whyChooseUs || existingUiUx?.whyChooseUs;
       existingUiUx.techStack = techStack || existingUiUx?.techStack;

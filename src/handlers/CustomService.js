@@ -27,11 +27,18 @@ class CustomService extends Response {
   };
   createCustomService = async (req, res) => {
     try {
-      const { description, proposition, whyChooseDes, whyChooseUs, delivers } =
-        req.body;
+      const {
+        heroDescription,
+        description,
+        proposition,
+        whyChooseDes,
+        whyChooseUs,
+        delivers,
+      } = req.body;
 
       // Create a new CustomService instance
       const newCustomService = new CustomServiceModel({
+        heroDescription,
         description,
         proposition,
         whyChooseDes,
@@ -68,10 +75,18 @@ class CustomService extends Response {
       }
 
       // Extract the fields to update from the request body
-      const { description, proposition, whyChooseDes, whyChooseUs, delivers } =
-        req.body;
+      const {
+        heroDescription,
+        description,
+        proposition,
+        whyChooseDes,
+        whyChooseUs,
+        delivers,
+      } = req.body;
 
       // Update the custom service document with the new values
+      customService.heroDescription =
+        heroDescription || customService.heroDescription;
       customService.description = description || customService.description;
       customService.proposition = proposition || customService.proposition;
       customService.whyChooseDes = whyChooseDes || customService.whyChooseDes;

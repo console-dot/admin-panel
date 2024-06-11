@@ -33,10 +33,11 @@ class AIService extends Response {
   };
   addAIService = async (req, res) => {
     try {
-      const { description, whyChooseUs, techStack } = req.body;
+      const { heroDescription, description, whyChooseUs, techStack } = req.body;
 
       // Create a new AiService instance
       const AiService = new ArtificialIntelligenceModel({
+        heroDescription,
         description,
         whyChooseUs,
         techStack,
@@ -72,9 +73,11 @@ class AIService extends Response {
       }
 
       // Extract the fields to update from the request body
-      const { description, whyChooseUs, techStack } = req.body;
+      const { heroDescription, description, whyChooseUs, techStack } = req.body;
 
       // Update description and whyChooseDes
+      existingAiService.heroDescription =
+        heroDescription || existingAiService?.heroDescription;
       existingAiService.description =
         description || existingAiService?.description;
       existingAiService.whyChooseUs =

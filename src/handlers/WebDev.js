@@ -33,10 +33,17 @@ class WebDev extends Response {
   };
   addWebDev = async (req, res) => {
     try {
-      const { description, proposition, whyChooseUs, techStack } = req.body;
+      const {
+        heroDescription,
+        description,
+        proposition,
+        whyChooseUs,
+        techStack,
+      } = req.body;
 
       // Create a new WebDevelopment instance
       const newWebDevelopment = new WebDevelopmentModel({
+        heroDescription,
         description,
         proposition,
         whyChooseUs,
@@ -70,8 +77,16 @@ class WebDev extends Response {
         });
       }
       // Extract the fields to update from the request body
-      const { description, proposition, whyChooseUs, techStack } = req.body;
+      const {
+        heroDescription,
+        description,
+        proposition,
+        whyChooseUs,
+        techStack,
+      } = req.body;
 
+      existingWebDev.heroDescription =
+        heroDescription || existingWebDev?.heroDescription;
       existingWebDev.description = description || existingWebDev?.description;
       existingWebDev.proposition = proposition || existingWebDev?.proposition;
       existingWebDev.whyChooseUs = whyChooseUs || existingWebDev?.whyChooseUs;

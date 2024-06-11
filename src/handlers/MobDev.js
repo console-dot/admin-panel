@@ -29,10 +29,17 @@ class MobDev extends Response {
   };
   addMobDev = async (req, res) => {
     try {
-      const { description, proposition, whyChooseUs, techStack } = req.body;
+      const {
+        heroDescription,
+        description,
+        proposition,
+        whyChooseUs,
+        techStack,
+      } = req.body;
 
       // Create a new MobDevelopment instance
       const newMobDevelopment = new MobileDevelopmentModel({
+        heroDescription,
         description,
         proposition,
         whyChooseUs,
@@ -67,8 +74,16 @@ class MobDev extends Response {
       }
 
       // Extract the fields to update from the request body
-      const { description, proposition, whyChooseUs, techStack } = req.body;
+      const {
+        heroDescription,
+        description,
+        proposition,
+        whyChooseUs,
+        techStack,
+      } = req.body;
 
+      existingMobDev.heroDescription =
+        heroDescription || existingMobDev?.heroDescription;
       existingMobDev.description = description || existingMobDev?.description;
       existingMobDev.proposition = proposition || existingMobDev?.proposition;
       existingMobDev.whyChooseUs = whyChooseUs || existingMobDev?.whyChooseUs;

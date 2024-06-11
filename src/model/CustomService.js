@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const customService = mongoose.Schema({
+  heroDescription: {
+    type: String,
+    required: true,
+  },
   description: {
     type: String,
     required: true,

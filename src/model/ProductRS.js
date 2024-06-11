@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const productRS = mongoose.Schema({
+  heroDescription: {
+    type: String,
+    required: true,
+  },
   description: {
     type: String,
     required: true,

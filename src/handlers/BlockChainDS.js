@@ -29,10 +29,11 @@ class BlockchainDS extends Response {
   };
   addBlockchain = async (req, res) => {
     try {
-      const { description, whyChooseUs, techStack } = req.body;
+      const { heroDescription, description, whyChooseUs, techStack } = req.body;
 
       // Create a new BlockChain instance
       const newBlockChain = new BlockChainDSModel({
+        heroDescription,
         description,
         whyChooseUs,
         techStack,
@@ -68,9 +69,11 @@ class BlockchainDS extends Response {
         });
       }
       // Extract the fields to update from the request body
-      const { description, whyChooseUs, techStack } = req.body;
+      const { heroDescription, description, whyChooseUs, techStack } = req.body;
 
       // Update description and whyChooseDes
+      existingBlockchainDS.heroDescription =
+        heroDescription || existingBlockchainDS?.heroDescription;
       existingBlockchainDS.description =
         description || existingBlockchainDS?.description;
       existingBlockchainDS.whyChooseUs =

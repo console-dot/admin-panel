@@ -27,7 +27,8 @@ class ProductRS extends Response {
   };
   addProductRS = async (req, res) => {
     try {
-      const { description, keyComponents, whyChooseUs } = req.body;
+      const { heroDescriptiondescription, keyComponents, whyChooseUs } =
+        req.body;
 
       if (!description || !keyComponents || !whyChooseUs) {
         return this.sendResponse(req, res, {
@@ -38,6 +39,7 @@ class ProductRS extends Response {
 
       // Create a new ProductRS instance
       const newProductRS = new ProductRSModel({
+        heroDescription,
         description,
         keyComponents,
         whyChooseUs,
@@ -72,9 +74,11 @@ class ProductRS extends Response {
         });
       }
       // Extract the fields to update from the request body
-      const { description, keyComponents, whyChooseUs } = req.body;
+      const { heroDescription, description, keyComponents, whyChooseUs } =
+        req.body;
 
       // Update the productRS document with the new values
+      productRS.heroDescription = heroDescription || productRS.heroDescription;
       productRS.description = description || productRS.description;
       productRS.keyComponents = keyComponents || productRS.keyComponents;
       productRS.whyChooseUs = whyChooseUs || productRS.whyChooseUs;

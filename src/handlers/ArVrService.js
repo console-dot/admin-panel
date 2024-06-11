@@ -29,10 +29,11 @@ class ArVrService extends Response {
   };
   addArVrService = async (req, res) => {
     try {
-      const { description, whyChooseUs, techStack } = req.body;
+      const { heroDescription, description, whyChooseUs, techStack } = req.body;
 
       // Create a new newArService instance
       const newArService = new ArVrServiceModel({
+        heroDescription,
         description,
         whyChooseUs,
         techStack,
@@ -65,8 +66,10 @@ class ArVrService extends Response {
         });
       }
       // Extract the fields to update from the request body
-      const { description, whyChooseUs, techStack } = req.body;
+      const { heroDescription, description, whyChooseUs, techStack } = req.body;
 
+      existingArVr.heroDescription =
+        heroDescription || existingArVr?.heroDescription;
       existingArVr.description = description || existingArVr?.description;
       existingArVr.whyChooseUs = whyChooseUs || existingArVr?.whyChooseUs;
       existingArVr.techStack = techStack || existingArVr?.techStack;
