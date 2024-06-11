@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const faq = mongoose.Schema({
+  heroDescription: {
+    type: String,
+    required: true,
+  },
   data: [
     {
       question: {

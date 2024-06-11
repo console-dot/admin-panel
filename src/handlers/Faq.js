@@ -19,8 +19,9 @@ class Faq extends Response {
   createFaq = async (req, res) => {
     try {
       const faqData = req.body.data;
+      const { heroDescription } = req.body;
 
-      const newFAQ = new FAQModel({ data: faqData });
+      const newFAQ = new FAQModel({ heroDescription, data: faqData });
 
       await newFAQ.save();
 
@@ -39,8 +40,13 @@ class Faq extends Response {
   updateFaq = async (req, res) => {
     try {
       const newData = req.body.data;
+      const { heroDescription } = req.body;
       const allFaqs = await FAQModel.find();
-      console.log(allFaqs[0])
+      const existingFAQ = await FAQModel.findOne();
+
+      existingFAQ.heroDescription = heroDescription;
+      const updated = await existingFAQ.save();
+
       const updatedFAQ = await FAQModel.findByIdAndUpdate(
         allFaqs[0]._id,
         { data: newData },
