@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const offshoringServices = mongoose.Schema({
+  heroDescription: {
+    type: String,
+    required: true,
+  },
   topDescription: {
     type: String,
     required: true,

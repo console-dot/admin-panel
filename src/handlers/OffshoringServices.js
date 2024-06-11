@@ -46,6 +46,7 @@ class OffshoringServices extends Response {
 
       // Create the offshore service with references to the offshore types
       const newOffshoreService = new OffshoringServicesModel({
+        heroDescription: req.body.heroDescription,
         topDescription: req.body.topDescription,
         bottomDescription: req.body.bottomDescription,
         offshoreType: offshoreTypeIds, // Array of offshore type IDs
@@ -66,69 +67,29 @@ class OffshoringServices extends Response {
     }
   };
 
-  // updateOffshoringServices = async (req, res) => {
-  //   try {
-  //     const offshoringServiceId = req.params.id;
-
-  //     const existingOffshoringService = await OffshoringServicesModel.findById(
-  //       offshoringServiceId
-  //     );
-  //     if (!existingOffshoringService) {
-  //       return this.sendResponse(req, res, {
-  //         status: 404,
-  //         message: "Offshoring Service not found",
-  //       });
-  //     }
-
-  //     const description = req.body.description;
-  //     existingOffshoringService.description = description;
-
-  //     const offshoreTypeData = {
-  //       type: req.body.offshoreType,
-  //       description: req.body.offshoreDescription,
-  //       advantages: req.body.offshoreAdvantages,
-  //       comparison: req.body.offshoreComparison,
-  //     };
-
-  //     let offshoreType = await OffshoreTypeModel.findOne({
-  //       type: offshoreTypeData.type,
-  //     });
-
-  //     if (!offshoreType) {
-  //       offshoreType = new OffshoreTypeModel(offshoreTypeData);
-  //       await offshoreType.save();
-  //     }
-  //     existingOffshoringService.offshoreType = offshoreType._id;
-
-  //     await existingOffshoringService.save();
-
-  //     return this.sendResponse(req, res, {
-  //       status: 200,
-  //       message: "Offshoring Service updated successfully",
-  //     });
-  //   } catch (error) {
-  //     console.error(error);
-  //     return this.sendResponse(req, res, {
-  //       status: 500,
-  //       message: "Internal Server Error!",
-  //     });
-  //   }
-  // };
-
   updateOffshoringServices = async (req, res) => {
     try {
       const { id } = req.params; // Assuming the id is passed in the request params
 
       // Update the top and bottom descriptions if provided in the request body
-      const { topDescription, bottomDescription, offshoreType } = req.body;
+      const {
+        heroDescription,
+        topDescription,
+        bottomDescription,
+        offshoreType,
+      } = req.body;
 
       // Construct an object with the fields to update
       const updateFields = {};
+      if (heroDescription) updateFields.heroDescription = heroDescription;
       if (topDescription) updateFields.topDescription = topDescription;
       if (bottomDescription) updateFields.bottomDescription = bottomDescription;
 
       // Update the offshore service
-      const updated = await OffshoringServicesModel.findByIdAndUpdate(id, updateFields);
+      const updated = await OffshoringServicesModel.findByIdAndUpdate(
+        id,
+        updateFields
+      );
 
       // If offshoreType is provided, update associated offshore types
       if (offshoreType) {
