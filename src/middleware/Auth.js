@@ -17,9 +17,9 @@ class Auth extends Response {
       }
       jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
         if (err) {
-          return this.sendResponse(res, err, {
+          return res.status(403).json({
             status: 403,
-            message: "Forbidden",
+            message: "Failed to authenticate token!",
           });
         }
         req.user = user;
