@@ -86,7 +86,7 @@ class User extends Response {
       await newUser.save();
 
       const token = jwt.sign({ email: newUser.email }, process.env.JWT_SECRET, {
-        expiresIn: "1h",
+        expiresIn: "1d",
       });
 
       return this.sendResponse(req, res, {
