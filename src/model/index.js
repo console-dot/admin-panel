@@ -21,6 +21,7 @@ const { UserModel } = require("./User");
 const { ContactUsModel } = require("./ContactUs");
 const { CaseStudyModel } = require("./CaseStudy");
 const { HeroDescriptionModel } = require("./HeroDescription");
+const {BlogModel} =require("./Blogs")
 
 module.exports = {
   IntroModel,
@@ -46,4 +47,5 @@ module.exports = {
   ContactUsModel,
   CaseStudyModel,
   HeroDescriptionModel,
+  BlogModel
 };
