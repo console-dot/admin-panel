@@ -24,6 +24,7 @@ const file = require("./File");
 const caseStudy = require("./CaseStudy");
 const mail = require("./Mail");
 const heroDescription = require("./HeroDescription");
+const blogs = require("./Blogs")
 
 router.use("/signup", user);
 router.use("/login", login);
@@ -50,5 +51,6 @@ router.use("/file", file);
 router.use("/case-study", caseStudy);
 router.use("/mail", mail);
 router.use("/hero-description", heroDescription);
+router.use("/blogs", blogs);
 
 module.exports = router;
