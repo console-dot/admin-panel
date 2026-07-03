@@ -1,15 +1,9 @@
 const Response = require("./Response");
-const nodemailer = require("nodemailer");
-const fs = require("fs");
-const path = require("path");
-
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.USER_MAIL,
-    pass: process.env.NODE_MAILER_PASSWORD,
-  },
-});
+const {
+  createMailTransporter,
+  getMailTo,
+  getMailFrom,
+} = require("../utils/mailTransporter");
 
 class Mail extends Response {
   addMail = async (req, res) => {
@@ -25,23 +19,24 @@ class Mail extends Response {
       }
 
       const fullMessage = `
-        Sender Name: ${senderName}
-        Sender Email: ${from}
-        Phone: ${phone}
-        Preferred Contact Method: ${contactMethod}
-        
-        Model:
-        ${model}
-      `;
+Sender Name: ${senderName}
+Sender Email: ${from}
+Phone: ${phone || "N/A"}
+Preferred Contact Method: ${contactMethod || "N/A"}
+
+Message:
+${model}
+      `.trim();
+
+      const transporter = createMailTransporter();
 
       await transporter.sendMail({
-        from: `${senderName} <${from}>`,
-        to: process.env.USER_MAIL,
-        replyTo: from, // Set the reply-to address to the client's email address
-        subject: subject || "Contact",
+        from: getMailFrom("ConsoleDot Contact Form"),
+        to: getMailTo(),
+        replyTo: from,
+        subject: subject ? `[Contact] ${subject}` : "New website contact",
         text: fullMessage,
       });
-      // Find the developer
 
       this.sendResponse(req, res, {
         data: null,
@@ -49,7 +44,7 @@ class Mail extends Response {
         status: 200,
       });
     } catch (error) {
-      console.log(error);
+      console.error("Contact mail error:", error);
       return this.sendResponse(req, res, {
         data: null,
         message: "Internal Server Error!",
@@ -79,27 +74,28 @@ class Mail extends Response {
       }
 
       const fullMessage = `
-        Sender Name: ${senderName}
-        Sender Email: ${from}
-        Phone: ${phone}
-        City: ${city}
-        Sender Experience: ${senderExperience}
-        Gender: ${gender}
-        Github: ${github}
-        Designation: ${designation}
-      `;
+Sender Name: ${senderName}
+Sender Email: ${from}
+Phone: ${phone}
+City: ${city || "N/A"}
+Experience: ${senderExperience || "N/A"}
+Gender: ${gender || "N/A"}
+Portfolio / GitHub: ${github || "N/A"}
+Applied For: ${designation}
+      `.trim();
+
+      const transporter = createMailTransporter();
 
       const mailOptions = {
-        from: `${senderName} <${process.env.USER_MAIL}>`,
-        to: process.env.USER_MAIL,
-        replyTo: from, // Set the reply-to address to the client's email address
-        subject: designation || "Job",
+        from: getMailFrom("ConsoleDot Careers"),
+        to: getMailTo(),
+        replyTo: from,
+        subject: `[Job Application] ${designation}`,
         text: fullMessage,
       };
 
       if (req.files && req.files.attachment) {
         const attachment = req.files.attachment;
-
         mailOptions.attachments = [
           {
             filename: attachment.name,
@@ -109,7 +105,6 @@ class Mail extends Response {
         ];
       }
 
-      // Send the email
       await transporter.sendMail(mailOptions);
 
       this.sendResponse(req, res, {
@@ -118,7 +113,7 @@ class Mail extends Response {
         status: 200,
       });
     } catch (error) {
-      console.log(error);
+      console.error("Job application mail error:", error);
       return this.sendResponse(req, res, {
         data: null,
         message: "Internal Server Error!",
@@ -127,4 +122,5 @@ class Mail extends Response {
     }
   };
 }
+
 module.exports = { Mail };
